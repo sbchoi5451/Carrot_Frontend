@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { BsStar, BsFillStarFill } from "react-icons/bs";
+import { AiOutlineHeart, AiTwotoneHeart } from "react-icons/ai";
 
 export const Layout = styled.div`
 width: 90%;
@@ -98,12 +98,12 @@ width: 50px;
 border: 1px solid black;
 `
 
-export const StarFalse = styled(BsStar)`
+export const StarFalse = styled(AiOutlineHeart)`
 color: #D91818;
 font-size: 40px;
 `
 
-export const StarTrue = styled(BsFillStarFill)`
+export const StarTrue = styled(AiTwotoneHeart)`
 color: #D91818;
 font-size: 40px;
 `

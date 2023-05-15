@@ -1,18 +1,25 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import mainData from './tempData'
 import * as st from './contentST'
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios';
+import { useQuery } from 'react-query';
 
 function MainContent() {
 
     const navigation = useNavigate();
 
+    const { data } = useQuery('mainData', async() => {
+        const response = await axios.get('http://localhost:5000/posts')
+        return response.data
+      })
+
     return (
         <st.Layout>
             <h2>중고거래 인기매물</h2>
             <st.Contanier>
-                {mainData.map((item) => (
-                    <st.Item onClick={() => navigation('/detail')}>
+                {data?.map((item) => (
+                    <st.Item key={item.id} onClick={() => navigation('/detail')}>
                         <st.ImageContainer>
                         <st.Image src={item.img} />
                         </st.ImageContainer>

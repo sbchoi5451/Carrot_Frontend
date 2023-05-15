@@ -8,7 +8,7 @@ width: 1440px;
 height: 100px;
 align-items: center;
 justify-content: space-around;
-background-color: black;
+background-color: white;
 `
 
 export const MenuStyle = styled.div`
@@ -20,8 +20,6 @@ width: ${props => props.width};
 
 export const ImgStyle = styled.img`
 width: ${props => props.width};
-margin-top: 15px;
-
 &:hover {
     cursor: pointer;
 }
@@ -37,24 +35,24 @@ font-size: 15px;
 `
 
 export const TextStyle = styled.div`
-color: ${props => props.color ? props.color : '#4d5159'};
-font-size: ${props => props.fontsize ? props.fontsize : '25px'};
+color: ${props => props.color ? props.color : 'black'};
+font-size: ${props => props.fontsize ? props.fontsize : '20px'};
 font-weight: ${props => props.fontweight ? props.fontweight : 'bold'};
 
 &:hover {
-    color: ${props => props.hovercolor ? props.hovercolor : '#8c8c8c'};
+    color: ${props => props.hovercolor ? props.hovercolor : 'black'};
     cursor: pointer;
 }
 `
 
 export const LoginBtn = styled.button`
 width: 120px;
-height: 35px;
-color: white;
+height: 32px;
+color: black;
 font-size: 15px;
 font-weight: bold;
 background-color: transparent;
-border: 1px solid white;
+border: 1px solid black;
 border-radius: 5px;
 
 &:hover {
