@@ -8,6 +8,7 @@ import SignupPage from '../pages/SignupPage'
 import MyPage from '../pages/MyPage'
 import WritingPage from '../pages/WritingPage'
 import styled from 'styled-components'
+import ListPage from '../pages/ListPage'
 
 function Router() {
   return (
@@ -15,9 +16,10 @@ function Router() {
       <GlobalStyle>
         <Routes>
           <Route path="/" element={<MainPage />} />
-          <Route path="/datil/:id" element={<DetailPage />} />
+          <Route path="/detail" element={<DetailPage />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/writing" element={<WritingPage />} />
+          <Route path="/list" element={<ListPage />} />
           <Route path="/singup" element={<SignupPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/mypage" element={<MyPage />} />
@@ -30,7 +32,11 @@ function Router() {
 export default Router
 
 const GlobalStyle = styled.div`
-display: flex;
 justify-content: center;
 align-items: center;
-
+display: flex;
+flex-direction: column;
+margin: 0 auto;
+height: 100%;
+max-width: 1440px;
+`

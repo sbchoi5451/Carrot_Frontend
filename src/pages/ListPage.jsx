@@ -1,14 +1,14 @@
 import React from 'react'
-import Detail from '../components/detail/Detail'
 import NavBar from '../components/NavBar'
+import List from '../components/list/List'
 
-function DetailPage() {
+function ListPage() {
   return (
     <>
     <NavBar />
-    <Detail />
+    <List />
     </>
   )
 }
 
-export default DetailPage
+export default ListPage
