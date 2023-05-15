@@ -18,20 +18,23 @@ function Router() {
           <Route path="/" element={<MainPage />} />
           <Route path="/detail" element={<DetailPage />} />
           <Route path="/search" element={<SearchPage />} />
-          <Route path="/writing" element={<WritingPage />} />
+
+          <Route path="/post/add" element={<WritingPage />} />
           <Route path="/list" element={<ListPage />} />
           <Route path="/singup" element={<SignupPage />} />
+
           <Route path="/login" element={<LoginPage />} />
           <Route path="/mypage" element={<MyPage />} />
         </Routes>
       </GlobalStyle>
     </BrowserRouter>
-  )
+  );
 }
 
-export default Router
+export default Router;
 
 const GlobalStyle = styled.div`
+
 justify-content: center;
 align-items: center;
 display: flex;
