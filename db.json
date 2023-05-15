@@ -1,0 +1,60 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "img": "img/testimage.jpg",
+      "price": "10,000원",
+      "address": "서울시 마포구",
+      "interest": "관심 19 채팅 32"
+    },
+    {
+      "id": 2,
+      "img": "img/testimage.jpg",
+      "price": "22,000원",
+      "address": "경기도 성남시",
+      "interest": "관심 19 채팅 32"
+    },
+    {
+      "id": 3,
+      "img": "img/testimage.jpg",
+      "price": "100,000원",
+      "address": "서울시 중구",
+      "interest": "관심 19 채팅 32"
+    },
+    {
+      "id": 4,
+      "img": "img/testimage.jpg",
+      "price": "333,000원",
+      "address": "서울시 서대문구",
+      "interest": "관심 19 채팅 32"
+    },
+    {
+      "id": 5,
+      "img": "img/testimage.jpg",
+      "price": "23,000원",
+      "address": "서울시 용산구",
+      "interest": "관심 19 채팅 32"
+    },
+    {
+      "id": 6,
+      "img": "img/testimage.jpg",
+      "price": "65,000원",
+      "address": "서울시 강동구",
+      "interest": "관심 19 채팅 32"
+    },
+    {
+      "id": 7,
+      "img": "img/testimage.jpg",
+      "price": "76,000원",
+      "address": "서울시 XX구",
+      "interest": "관심 19 채팅 32"
+    },
+    {
+      "id": 8,
+      "img": "img/testimage.jpg",
+      "price": "45,000원",
+      "address": "서울시 AA구",
+      "interest": "관심 19 채팅 32"
+    }
+  ]
+}
