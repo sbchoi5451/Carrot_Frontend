@@ -17,7 +17,7 @@ function Router() {
           <Route path="/" element={<MainPage />} />
           <Route path="/datil/:id" element={<DetailPage />} />
           <Route path="/search" element={<SearchPage />} />
-          <Route path="/writing" element={<WritingPage />} />
+          <Route path="/post/add" element={<WritingPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/mypage" element={<MyPage />} />
