@@ -9,6 +9,7 @@ import useToggle from "../hooks/useToggle";
 import { fetchAddPost } from "../api/addPostApi";
 import Cookies from "js-cookie";
 
+
 const WritingPage = () => {
   // 게시글 입력값 상태
   const [title, handleChangeTitle, , titleRef] = useInput();
@@ -16,6 +17,12 @@ const WritingPage = () => {
   const [isShared, handleChangeShared] = useToggle();
   const [content, handleChangeContent, , contentRef] = useInput();
   const [specificLocation, handleChangeSpecificLocation, , specificLocationRef] = useInput();
+  const [uploadedImages, setUploadedImages] = useState([]);
+
+  // ImageUpload 컴포넌트 prop
+  const onImageUpload = (imageFiles) => {
+    setUploadedImages(imageFiles);
+  };
 
   // 주소 입력 palceholder 상태
   const [userTradeLocation, setUserTradeLocation] = useState("상세주소를 입력해주세요.");
@@ -40,15 +47,17 @@ const WritingPage = () => {
 
   // 완료 버튼 클릭시
   const handlePostCompleteBtnClick = () => {
-    const newData = {
-      postTitle: "안녕하세요~~~~~~222222222",
-      postContent: "ㅁㄴㅇㄻㄴㅇㄻㄴㅇㄹ",
-      postPrice: 120000,
-      tradeLocation: "String eda",
-      specificLocation: "집 앞에서 ㄱㄱ",
-      isShared: false
-    }
-    fetchAddPost(newData);
+    const newPost = {
+      // image: null,
+      postTitle: title,
+      postContent: content,
+      postPrice: price,
+      tradeLocation,
+      specificLocation,
+      isShared,
+    };
+
+    fetchAddPost(newPost);
   };
 
   // 상세주소 입력 input placeholder 설정
@@ -73,7 +82,7 @@ const WritingPage = () => {
             완료
           </StCompleteBtn>
         </StBtnBox>
-        <ImageUpload />
+        <ImageUpload onImageUpload={onImageUpload} />
         <StTitleInput value={title} onChange={handleChangeTitle} type="text" placeholder="글 제목" />
         <StPriceBox>
           <StPriceInput value={price} onChange={handleChangePrice} type="text" placeholder="가격" />

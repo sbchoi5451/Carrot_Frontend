@@ -7,12 +7,12 @@ const axiosInstance = axios.create({
 });
 
 // Access_Key 가져오는 함수
-const getAccessToken = () => {
+export const getAccessToken = () => {
   return Cookies.get("access_key");
 };
 
 // Refresh_Key 가져오는 함수
-const getRefreshToken = () => {
+export const getRefreshToken = () => {
   return Cookies.get("refresh_key");
 };
 
@@ -24,6 +24,7 @@ export const fetchSignUp = async (user) => {
     return;
   } catch (err) {
     console.log(err);
+    return err.data;
   }
 };
 
@@ -83,3 +84,4 @@ export const fetchUserInfo = () => {
     return null;
   }
 };
+
