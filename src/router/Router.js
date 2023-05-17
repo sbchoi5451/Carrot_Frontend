@@ -16,13 +16,11 @@ function Router() {
       <GlobalStyle>
         <Routes>
           <Route path="/" element={<MainPage />} />
-          <Route path="/detail" element={<DetailPage />} />
+          <Route path="/detail/:id" element={<DetailPage />} />
           <Route path="/search" element={<SearchPage />} />
-
           <Route path="/post/add" element={<WritingPage />} />
           <Route path="/list" element={<ListPage />} />
-          <Route path="/singup" element={<SignupPage />} />
-
+          <Route path="/signup" element={<SignupPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/mypage" element={<MyPage />} />
         </Routes>
@@ -41,5 +39,5 @@ display: flex;
 flex-direction: column;
 margin: 0 auto;
 height: 100%;
-max-width: 1440px;
+max-width: 1200px;
 `

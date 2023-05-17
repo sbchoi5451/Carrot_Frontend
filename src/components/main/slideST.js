@@ -3,15 +3,15 @@ import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
 
 export const SlideLayout = styled.div`
 background-color: #fbf7f2;
-width: 90%;
+width: 100%;
 margin-top:150px;
-height: 650px;
+height: 550px;
 display: flex;
 justify-content: center;
 `
 
 export const SlideBody = styled.div`
-width: 90%;
+width: 100%;
 height: 100%;
 display: flex;
 align-items: center;
@@ -84,5 +84,19 @@ ${(props) => props.active === 'true' && css` animation: slide-in 0.5s ease-in-ou
 .content {
     width: 30%;
     margin-left: 20px;
+
+    .price {
+      font-size: 15px;
+      font-weight: bold;
+    }
+
+    .tradelocation {
+      font-size: 15px;
+    }
+
+    .interestcount {
+      font-size: 12px;
+      color: gray;
+    }
 }
 `
