@@ -5,9 +5,9 @@ const axiosInstance = axios.create({
 });
 
 // 회원가입
-export const fetchSignUp = async (tb_user) => {
+export const fetchSignUp = async (user) => {
   try {
-    const response = await axiosInstance.post("/user/signup", tb_user);
+    const response = await axiosInstance.post("/user/signup", user);
     console.log(response);
     return;
   } catch (err) {
