@@ -1,13 +1,12 @@
 import React from 'react'
 import * as st from './ListST'
-import mainData from '../main/tempData'
 
 function List() {
 
     return (
         <st.Layout>
 
-            <div className='wrap'>
+            {/* <div className='wrap'>
                 <st.MoreContent>
                     <div className='title'>항해마켓 인기중고</div>
                 </st.MoreContent>
@@ -29,7 +28,7 @@ function List() {
                     ))}
 
                 </st.MoreWrap>
-            </div>
+            </div> */}
 
         </st.Layout>
     )

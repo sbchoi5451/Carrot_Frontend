@@ -1,60 +1,186 @@
 {
-  "posts": [
+  "postRecommend": [
     {
-      "id": 1,
-      "img": "img/testimage.jpg",
-      "price": "10,000원",
-      "address": "서울시 마포구",
-      "interest": "관심 19 채팅 32"
+      "postId" : 1,
+      "postTitle" : "판매중입니다",
+      "postImage" : "img/testimage.jpg",
+      "postPrice" : "50000",
+      "interestCount" : "58",
+      "tradeLocation" : "서울특별시 강동구",
+      "tradeState": "0"
     },
     {
-      "id": 2,
-      "img": "img/testimage.jpg",
-      "price": "22,000원",
-      "address": "경기도 성남시",
-      "interest": "관심 19 채팅 32"
+      "postId" : 2,
+      "postTitle" : "판매중입니다",
+      "postImage" : "img/testimage.jpg",
+      "postPrice" : "150000",
+      "interestCount" : "428",
+      "tradeLocation" : "서울특별시 강동구",
+      "tradeState": "2"
     },
     {
-      "id": 3,
-      "img": "img/testimage.jpg",
-      "price": "100,000원",
-      "address": "서울시 중구",
-      "interest": "관심 19 채팅 32"
+      "postId" : 3,
+      "postTitle" : "판매중입니다",
+      "postImage" : "img/testimage.jpg",
+      "postPrice" : "500200",
+      "interestCount" : "232",
+      "tradeLocation" : "서울특별시 강동구",
+      "tradeState": "0"
     },
     {
-      "id": 4,
-      "img": "img/testimage.jpg",
-      "price": "333,000원",
-      "address": "서울시 서대문구",
-      "interest": "관심 19 채팅 32"
+      "postId" : 4,
+      "postTitle" : "판매중입니다",
+      "postImage" : "img/testimage.jpg",
+      "postPrice" : "40000",
+      "interestCount" : "222",
+      "tradeLocation" : "서울특별시 강동구",
+      "tradeState": "1"
     },
     {
-      "id": 5,
-      "img": "img/testimage.jpg",
-      "price": "23,000원",
-      "address": "서울시 용산구",
-      "interest": "관심 19 채팅 32"
+      "postId" : 5,
+      "postTitle" : "판매중입니다",
+      "postImage" : "img/testimage.jpg",
+      "postPrice" : "4400",
+      "interestCount" : "22",
+      "tradeLocation" : "서울특별시 강동구",
+      "tradeState": "0"
     },
     {
-      "id": 6,
-      "img": "img/testimage.jpg",
-      "price": "65,000원",
-      "address": "서울시 강동구",
-      "interest": "관심 19 채팅 32"
+      "postId" : 6,
+      "postTitle" : "판매중입니다",
+      "postImage" : "img/testimage.jpg",
+      "postPrice" : "1222000",
+      "interestCount" : "1231",
+      "tradeLocation" : "서울특별시 강동구",
+      "tradeState": "1"
     },
     {
-      "id": 7,
-      "img": "img/testimage.jpg",
-      "price": "76,000원",
-      "address": "서울시 XX구",
-      "interest": "관심 19 채팅 32"
+      "postId" : 7,
+      "postTitle" : "판매중입니다",
+      "postImage" : "img/testimage.jpg",
+      "postPrice" : "555000",
+      "interestCount" : "123",
+      "tradeLocation" : "서울특별시 강동구",
+      "tradeState": "2"
     },
     {
-      "id": 8,
-      "img": "img/testimage.jpg",
-      "price": "45,000원",
-      "address": "서울시 AA구",
-      "interest": "관심 19 채팅 32"
+      "postId" : 8,
+      "postTitle" : "판매중입니다",
+      "postImage" : "img/testimage.jpg",
+      "postPrice" : "66000",
+      "interestCount" : "1243",
+      "tradeLocation" : "서울특별시 강동구",
+      "tradeState": "0"
+    },
+    {
+      "postId" : 9,
+      "postTitle" : "판매중입니다",
+      "postImage" : "img/testimage.jpg",
+      "postPrice" : "584500",
+      "interestCount" : "555",
+      "tradeLocation" : "서울특별시 강동구",
+      "tradeState": "2"
+    },
+    {
+      "postId" : 10,
+      "postTitle" : "판매중입니다",
+      "postImage" : "img/testimage.jpg",
+      "postPrice" : "56800",
+      "interestCount" : "23",
+      "tradeLocation" : "서울특별시 강동구",
+      "tradeState": "0"
+    }
+  ],
+  "post": [
+    {
+      "postId" : 1,
+      "postTitle" : "판매중입니다",
+      "postImage" : "img/testimage.jpg",
+      "postPrice" : "502000",
+      "interestCount" : "58",
+      "chatCount" : "528",
+      "tradeLocation" : "서울특별시 강동구",
+      "tradeState": "0"
+    },
+    {
+      "postId" : 2,
+      "postTitle" : "판매중입니다",
+      "postImage" : "img/testimage.jpg",
+      "postPrice" : "1243423",
+      "interestCount" : "58",
+      "chatCount" : "528",
+      "tradeLocation" : "서울특별시 강동구",
+      "tradeState": "0"
+    },
+    {
+      "postId" : 3,
+      "postTitle" : "판매중입니다",
+      "postImage" : "img/testimage.jpg",
+      "postPrice" : "2355325",
+      "interestCount" : "3432",
+      "chatCount" : "528",
+      "tradeLocation" : "서울특별시 강동구",
+      "tradeState": "0"
+    },
+    {
+      "postId" : 4,
+      "postTitle" : "판매중입니다",
+      "postImage" : "img/testimage.jpg",
+      "postPrice" : "234234",
+      "interestCount" : "58",
+      "chatCount" : "528",
+      "tradeLocation" : "서울특별시 강동구",
+      "tradeState": "1"
+    },
+    {
+      "postId" : 5,
+      "postTitle" : "판매중입니다",
+      "postImage" : "img/testimage.jpg",
+      "postPrice" : "2342234",
+      "interestCount" : "23523",
+      "chatCount" : "23",
+      "tradeLocation" : "서울특별시 강동구",
+      "tradeState": "2"
+    },
+    {
+      "postId" : 6,
+      "postTitle" : "판매중입니다",
+      "postImage" : "img/testimage.jpg",
+      "postPrice" : "124124",
+      "interestCount" : "23423",
+      "chatCount" : "528",
+      "tradeLocation" : "서울특별시 강동구",
+      "tradeState": "1"
+    },
+    {
+      "postId" : 7,
+      "postTitle" : "판매중입니다",
+      "postImage" : "img/testimage.jpg",
+      "postPrice" : "124124",
+      "interestCount" : "58",
+      "chatCount" : "528",
+      "tradeLocation" : "서울특별시 강동구",
+      "tradeState": "2"
+    },
+    {
+      "postId" : 8,
+      "postTitle" : "판매중입니다",
+      "postImage" : "img/testimage.jpg",
+      "postPrice" : "124124",
+      "interestCount" : "34",
+      "chatCount" : "23523",
+      "tradeLocation" : "서울특별시 강동구",
+      "tradeState": "0"
+    },
+    {
+      "postId" : 9,
+      "postTitle" : "판매중입니다",
+      "postImage" : "img/testimage.jpg",
+      "postPrice" : "346346",
+      "interestCount" : "24141",
+      "chatCount" : "3523",
+      "tradeLocation" : "서울특별시 강동구",
+      "tradeState": "0"
     }
   ]
 }

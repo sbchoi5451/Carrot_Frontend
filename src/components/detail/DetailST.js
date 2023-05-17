@@ -27,9 +27,9 @@ height: auto;
 align-items: ${props => props.align ? props.align : 'center'};
 justify-content: space-between;
 margin-top: 30px;
-flex-direction: ${props => props.flexDirection ? props.flexDirection : 'row'};
-border-top: ${props => props.borderTop};
-border-bottom: ${props => props.borderBottom};
+flex-direction: ${props => props.flexdirection ? props.flexdirection : 'row'};
+border-top: ${props => props.bordertop};
+border-bottom: ${props => props.borderbottom};
 padding-top: 20px;
 padding-bottom: 20px;
 
