@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import { styled } from "styled-components";
-// import PhotoCameraBackIcon from "@mui/icons-material/PhotoCameraBack";
+import { useDispatch } from "react-redux";
+import { setImage } from "../../redux/modules/post";
 
 function ImageUpload() {
+  const dispatch = useDispatch();
   const [selectedImage, setSelectedImage] = useState([]);
   let imageCount = 0;
+
   const handleImageUpload = (event) => {
     // input.files는 유사배열객체 {[index] : file, length: 1}
     const file = event.target.files;
@@ -14,6 +17,7 @@ function ImageUpload() {
     // fileReading이 끝나면 진행되는 부분
     reader.onloadend = () => {
       setSelectedImage([reader.result, ...selectedImage]);
+      dispatch(setImage(fileArray));
     };
 
     // fileArray의 file마다 url reading하는 부분
