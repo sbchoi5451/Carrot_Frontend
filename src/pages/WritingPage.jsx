@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import NavBar from "../components/NavBar";
 import useInput from "../hooks/useInput";
 import useToggle from "../hooks/useToggle";
+import { fetchAddPost } from "../api/addPostApi";
 
 const WritingPage = () => {
   // 게시글 입력값 상태
@@ -14,6 +15,12 @@ const WritingPage = () => {
   const [isShared, handleChangeShared] = useToggle();
   const [content, handleChangeContent, , contentRef] = useInput();
   const [specificLocation, handleChangeSpecificLocation, , specificLocationRef] = useInput();
+  const [uploadedImages, setUploadedImages] = useState([]);
+
+  // ImageUpload 컴포넌트 prop
+  const onImageUpload = (imageFiles) => {
+    setUploadedImages(imageFiles);
+  };
 
   // 주소 입력 palceholder 상태
   const [userTradeLocation, setUserTradeLocation] = useState("상세주소를 입력해주세요.");
@@ -34,20 +41,16 @@ const WritingPage = () => {
   // 완료 버튼 클릭시
   const handlePostCompleteBtnClick = () => {
     const newPost = {
-      image: imageSlice,
-      title,
-      content,
-      price,
-      // tradeLocation,
-      // DB 한글 이슈로 '37' 라인 블락하고 '39' 라인으로 사용
-      tradeLocation: "abcd",
-
-      // specificLocation,
-      // DB 한글 이슈로 '42' 라인 블락하고 '44' 라인으로 사용
-      specificLocation: "efg",
+      // image: null,
+      postTitle: title,
+      postContent: content,
+      postPrice: price,
+      tradeLocation,
+      specificLocation,
       isShared,
     };
-    console.log("요청시 이 데이터가 전송됩니다", newPost);
+
+    fetchAddPost(newPost);
   };
 
   // 상세주소 입력 input placeholder 설정
@@ -72,7 +75,7 @@ const WritingPage = () => {
             완료
           </StCompleteBtn>
         </StBtnBox>
-        <ImageUpload />
+        <ImageUpload onImageUpload={onImageUpload} />
         <StTitleInput value={title} onChange={handleChangeTitle} type="text" placeholder="글 제목" />
         <StPriceBox>
           <StPriceInput value={price} onChange={handleChangePrice} type="text" placeholder="가격" />
