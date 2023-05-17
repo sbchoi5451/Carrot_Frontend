@@ -23,7 +23,7 @@ function ImageUpload() {
   return (
     <StContainer>
       <label htmlFor="file">
-        <StUploadBox>{/* <PhotoCameraBackIcon /> */}사진 선택하기</StUploadBox>
+        <StUploadBox>{/* <PhotoCameraBackIcon /> */}사진 첨부하기</StUploadBox>
       </label>
       <StInput type="file" name="file" id="file" onChange={handleImageUpload} />
       <StUploadedImageBox>

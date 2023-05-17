@@ -1,14 +1,14 @@
-import React from 'react'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import MainPage from '../pages/MainPage'
-import DetailPage from '../pages/DetailPage'
-import SearchPage from '../pages/SearchPage'
-import LoginPage from '../pages/LoginPage'
-import SignupPage from '../pages/SignupPage'
-import MyPage from '../pages/MyPage'
-import WritingPage from '../pages/WritingPage'
-import styled from 'styled-components'
-import ListPage from '../pages/ListPage'
+import React from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import MainPage from "../pages/MainPage";
+import DetailPage from "../pages/DetailPage";
+import SearchPage from "../pages/SearchPage";
+import LoginPage from "../pages/LoginPage";
+import SignupPage from "../pages/SignupPage";
+import MyPage from "../pages/MyPage";
+import WritingPage from "../pages/WritingPage";
+import styled from "styled-components";
+import ListPage from "../pages/ListPage";
 
 function Router() {
   return (
@@ -32,7 +32,6 @@ function Router() {
 export default Router;
 
 const GlobalStyle = styled.div`
-
 justify-content: center;
 align-items: center;
 display: flex;
