@@ -19,6 +19,9 @@ function NavBar() {
     },
   });
 
+  const navigation = useNavigate();
+  const location = useLocation();
+  const mutation = useMutation(getKeywordApi)
   const [searchValue, setSearchValue] = useState("");
   const searchHandler = (e) => setSearchValue(e.target.value);
   const enterSearchHandler = async (e) => {
@@ -42,6 +45,7 @@ function NavBar() {
       setIsLogin(true);
     }
   }, [userInfo]);
+
 
   // 로그아웃 클릭 시
   const handleLogoutBtnClick = () => {

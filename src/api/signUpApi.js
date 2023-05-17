@@ -36,6 +36,7 @@ export const fetchLogin = async (user) => {
     if (response.status === 200) {
       const accessToken = response.headers["access_key"];
       const refreshToken = response.headers["refresh_key"];
+      const token = accessToken.replace("Bearer", "");
 
       if (accessToken && refreshToken) {
         Cookies.set("access_key", accessToken);
@@ -83,3 +84,4 @@ export const fetchUserInfo = () => {
     return null;
   }
 };
+

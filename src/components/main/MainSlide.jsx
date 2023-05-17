@@ -17,7 +17,7 @@ function MainSlide() {
 
   const queryClient = useQueryClient();
 
-  const { data } = useQuery(['mainSlide'], () => getPost())
+  const { data, error } = useQuery('mainSlide', getPost) //recommend 로 수정 필요
 
   const prevHandler = () => {
     setCurrIndex((index) => (index === 0 ? data.length - 1 : index - 1))
@@ -25,6 +25,10 @@ function MainSlide() {
 
   const nextHandler = () => {
     setCurrIndex((index) => (index === data.length - 1 ? 0 : index + 1))
+  }
+
+  if (error) {
+    return; //error 코드 작성 필요
   }
 
   return (

@@ -63,3 +63,7 @@ export const LoginBtn = styled.button`
     color: black;
   }
 `;
+
+export const WelcomeMsg = styled.span`
+font-size: 15px;
+`

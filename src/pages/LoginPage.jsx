@@ -5,6 +5,7 @@ import { useMutation } from "react-query";
 import Button from "../components/Button";
 import { fetchLogin } from "../api/signUpApi";
 import useInput from "../hooks/useInput";
+import Cookies from "js-cookie";
 
 function LoginPage() {
   const [id, handleChangeId, , idRef] = useInput();
@@ -34,8 +35,9 @@ function LoginPage() {
       password,
     };
     mutateLogin(user);
+    sessionStorage.setItem("userId", id)
   };
-
+  
   // 버튼 prop
   const signUpBtnStyle = { backgroundColor: "#ff7e36", content: "회원가입", maxWidth: "220px" };
   const loginBtnStyle = { backgroundColor: "#ff7e36", content: "로그인", maxWidth: "220px" };
