@@ -9,7 +9,7 @@ import useToggle from "../hooks/useToggle";
 import { fetchAddPost } from "../api/addPostApi";
 import Cookies from "js-cookie";
 
-const WritingPage = () => {
+const EditPage = () => {
   // 게시글 입력값 상태
   const [title, handleChangeTitle, , titleRef] = useInput();
   const [price, handleChangePrice, , priceRef] = useInput();
@@ -33,22 +33,22 @@ const WritingPage = () => {
     window.history.back();
   };
 
-  // const access = Cookies.get("access-token")
-  // const refresh = Cookies.get("access-token")
+  const access = Cookies.get("access-token")
+  const refresh = Cookies.get("access-token")
 
-  // console.log(access, refresh)
+  console.log(access, refresh)
 
   // 완료 버튼 클릭시
   const handlePostCompleteBtnClick = () => {
-    const newData = {
-      postTitle: "안녕하세요~~~~~~222222222",
-      postContent: "ㅁㄴㅇㄻㄴㅇㄻㄴㅇㄹ",
-      postPrice: 120000,
-      tradeLocation: "String eda",
-      specificLocation: "집 앞에서 ㄱㄱ",
-      isShared: false
-    }
-    fetchAddPost(newData);
+    const newPost = {
+      title,
+      content,
+      price,
+      tradeLocation,
+      specificLocation,
+      isShared,
+    };
+    fetchAddPost(newPost, access, refresh);
   };
 
   // 상세주소 입력 input placeholder 설정
@@ -98,7 +98,7 @@ const WritingPage = () => {
   );
 };
 
-export default WritingPage;
+export default EditPage;
 
 const StContainer = styled.div`
   margin-top: 100px;
@@ -179,39 +179,3 @@ const StSpecificLocationInput = styled.input`
   font-size: 16px;
   margin-top: 10px;
 `;
-
-// import React, { useState, useEffect } from "react";
-// import axios from "axios";
-
-// function AddressSearch() {
-//   const [address, setAddress] = useState("");
-//   const [results, setResults] = useState([]);
-//   const myApiKey = "devU01TX0FVVEgyMDIzMDUxMzIzNTgzNDExMzc2OTY=";
-
-//   useEffect(() => {
-//     const fetchAddress = async () => {
-//       if (address && address.length >= 2) {
-//         try {
-//           const response = await axios.get(`http://localhost:3001/api?keyword=${address}`);
-//           const newResults = response.data.results.juso || [];
-//           setResults((prevResults) => [...newResults]);
-//         } catch (error) {
-//           console.error("Error fetching data: ", error);
-//         }
-//       } else {
-//         setResults([]);
-//       }
-//     };
-
-//     fetchAddress();
-//   }, [address]);
-
-//   return (
-//     <div>
-//       <input type="text" value={address} onChange={(e) => setAddress(e.target.value)} placeholder="주소를 입력하세요" />
-//       {results.length > 0 ? results.map((result) => <div key={result.zipNo}>여기임 - {result.roadAddr}</div>) : <div>검색 결과가 없습니다.</div>}
-//     </div>
-//   );
-// }
-
-// export default AddressSearch;

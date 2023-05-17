@@ -62,15 +62,16 @@ export const MoreBody = styled.div`
 text-align: left;
 
 .title {
-    font-size: 18px;
+    font-size: 15px;
 }
 
 .price {
-    font-size: 15px;
+    font-size: 12px;
+    font-weight: bold;
 }
 
 .address {
-    font-size: 15px;
+    font-size: 12px;
 }
 
 .interest {
