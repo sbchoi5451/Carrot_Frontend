@@ -36,7 +36,11 @@ function SignupPage() {
     },
   });
 
-  // 아이디 중복검사 해야합니다!
+  // 아이디 중복검사
+  const handleCheckIdBtnClick = () => {
+    const err = fetchSignUp(id);
+    console.log("err msg", err.msg);
+  };
 
   // 아이디 유효성 검사
   useEffect(() => {
@@ -159,9 +163,7 @@ function SignupPage() {
       password,
       email,
       phone: phone.replaceAll("-", ""),
-      // location,
-      // DB 한글 이슈로 '162' 라인 블락하고 '164' 라인으로 사용
-      location: "abcd",
+      location,
     };
     console.log("회원가입 유저 전송", newUser);
 
@@ -191,7 +193,7 @@ function SignupPage() {
                 placeholder="아이디는 5~12자 이내로 입력하세요."
                 aria-describedby="idInputError"
               />
-              <Button btnStyle={idCheckBtnStyle} />
+              <Button btnStyle={idCheckBtnStyle} onClick={handleCheckIdBtnClick} />
             </StIdInputGroupWrapper>
             <div role="alert" id="idInputError">
               {userIdError}
