@@ -1,9 +1,41 @@
 import React from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+import { useMutation } from "react-query";
 import Button from "../components/Button";
-import logo from "../img/logo.png";
+import { fetchLogin } from "../api/signUpApi";
+import useInput from "../hooks/useInput";
 
 function LoginPage() {
+  const [id, handleChangeId, , idRef] = useInput();
+  const [password, handleChangePassword, , passwordRef] = useInput();
+
+  const navigate = useNavigate();
+  const { mutate: mutateLogin } = useMutation(fetchLogin, {
+    onSuccess: () => {
+      alert("로그인이 완료되었습니다.");
+      navigate("/");
+    },
+    onError: (error) => {
+      const message = error.response;
+      return alert(message);
+    },
+  });
+
+  // 회원가입 버튼 클릭시
+  const handleSignUpBtnClick = () => {
+    navigate("/signup");
+  };
+
+  // 로그인 버튼 클릭시
+  const handleLoginBtnClick = () => {
+    const user = {
+      userId: id,
+      password,
+    };
+    mutateLogin(user);
+  };
+
   // 버튼 prop
   const signUpBtnStyle = { backgroundColor: "#ff7e36", content: "회원가입", maxWidth: "220px" };
   const loginBtnStyle = { backgroundColor: "#ff7e36", content: "로그인", maxWidth: "220px" };
@@ -11,14 +43,14 @@ function LoginPage() {
   return (
     <StContainer>
       <StLoginBox>
-        <StLogo src={logo} alt="항해마켓 로고" />
-        <StLoginInp type="text" placeholder="아이디를 입력해주세요." aria-describedby="idInputError" />
+        <StLogo src="img/dang.png" alt="항해마켓 로고" />
+        <StLoginInp type="text" value={id} onChange={handleChangeId} placeholder="아이디를 입력해주세요." aria-describedby="idInputError" />
         <div role="alert" id="idInputError"></div>
-        <StLoginInp type="password" placeholder="비밀번호를 입력해주세요." aria-describedby="pwInputError" />
+        <StLoginInp type="password" value={password} onChange={handleChangePassword} placeholder="비밀번호를 입력해주세요." aria-describedby="pwInputError" />
         <div role="alert" id="pwInputError"></div>
         <StBtnBox>
-          <Button btnStyle={signUpBtnStyle} />
-          <Button btnStyle={loginBtnStyle} />
+          <Button btnStyle={signUpBtnStyle} onClick={handleSignUpBtnClick} />
+          <Button btnStyle={loginBtnStyle} onClick={handleLoginBtnClick} />
         </StBtnBox>
       </StLoginBox>
     </StContainer>
@@ -52,13 +84,14 @@ const StLoginBox = styled.div`
 `;
 
 const StLogo = styled.img`
-  width: 129px;
-  height: 134px;
+  width: 220px;
+  padding: 20px 0 35px 0;
+  box-sizing: border-box;
   margin: 0 auto;
   margin-bottom: 11px;
   @media (max-width: 1330px) and (min-width: 400px) {
-    width: 116px;
-    height: 120px;
+    width: 150px;
+    padding: 15px 0 25px 0;
   }
 `;
 
