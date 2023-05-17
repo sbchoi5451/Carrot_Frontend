@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import NavBar from "../components/NavBar";
 import { styled } from "styled-components";
 import useToggle from "../hooks/useToggle";
@@ -8,6 +8,9 @@ import { BsReceipt } from "react-icons/bs";
 import { BsBagCheck } from "react-icons/bs";
 import { BsChatLeftDots } from "react-icons/bs";
 import TradeList from "../components/mypage/TradeList";
+import { fetchUserInfo } from "../api/signUpApi";
+import { fetchInterestedList } from "../api/mypageApi";
+import Button from "../components/Button";
 
 function MyPage() {
   // 관심목록 버튼 토글
@@ -17,9 +20,16 @@ function MyPage() {
   // 구매내역 버튼 토글
   const [isPurchaseListToggled, handlePurchaseListToggled] = useToggle();
 
+  const userInfo = fetchUserInfo();
+  // 유저 정보 받아오기
+  useEffect(() => {
+    fetchUserInfo();
+  }, [userInfo]);
+
   // 관심목록 버튼 클릭 시
   const handleLikeListClick = () => {
     handleLikeListToggled();
+    const interestedList = fetchInterestedList();
   };
 
   // 판매내역 버튼 클릭 시
@@ -35,39 +45,40 @@ function MyPage() {
   return (
     <>
       <NavBar />
-      <StContainer>
-        <StUserBox>
-          <StLogo src="img/logindefault.png" alt="당근마켓" />
-          <p>user name 님</p>
-        </StUserBox>
-        <StMainText>내 게시물</StMainText>
-        <div>
-          <StLikeListBox>
-            <AiOutlineHeart />
-            <StCommonBtn aria-label="클릭하여 관심목록을 볼 수 있습니다." onClick={handleLikeListClick}>
-              관심목록
-            </StCommonBtn>
-            {isLikeListToggled ? <InterestedList /> : null}
-          </StLikeListBox>
-          <StLikeListBox>
-            <BsReceipt />
-            <StCommonBtn aria-label="클릭하여 판매내역을 볼 수 있습니다." onClick={handleTradeListClick}>
-              판매내역
-            </StCommonBtn>
-            {isTradeListToggled ? <TradeList /> : null}
-          </StLikeListBox>
-          <StLikeListBox>
-            <BsBagCheck />
-            <StCommonBtn aria-label="클릭하여 구매내역을 볼 수 있습니다." onClick={handlePurchaseListClick}>
-              구매내역
-            </StCommonBtn>
-          </StLikeListBox>
-          <StLikeListBox>
-            <BsChatLeftDots />
-            <StCommonBtn aria-label="클릭하여 채팅목록을 볼 수 있습니다.">채팅목록</StCommonBtn>
-          </StLikeListBox>
-        </div>
-      </StContainer>
+      {userInfo ? (
+        <StContainer>
+          <StUserBox>
+            <StLogo src="img/logindefault.png" alt="당근마켓" />
+            <p>{`${userInfo.sub} 님`}</p>
+          </StUserBox>
+          <StMainText>내 게시물</StMainText>
+          <div>
+            <StLikeListBox onClick={handleLikeListClick}>
+              <AiOutlineHeart />
+              <StCommonBtn aria-label="클릭하여 관심목록을 볼 수 있습니다.">관심목록</StCommonBtn>
+              {isLikeListToggled ? <InterestedList /> : null}
+            </StLikeListBox>
+            <StLikeListBox onClick={handleTradeListClick}>
+              <BsReceipt />
+              <StCommonBtn aria-label="클릭하여 판매내역을 볼 수 있습니다.">판매내역</StCommonBtn>
+              {isTradeListToggled ? <TradeList /> : null}
+            </StLikeListBox>
+            <StLikeListBox onClick={handlePurchaseListClick}>
+              <BsBagCheck />
+              <StCommonBtn aria-label="클릭하여 구매내역을 볼 수 있습니다.">구매내역</StCommonBtn>
+            </StLikeListBox>
+            <StLikeListBox>
+              <BsChatLeftDots />
+              <StCommonBtn aria-label="클릭하여 채팅목록을 볼 수 있습니다.">채팅목록</StCommonBtn>
+            </StLikeListBox>
+          </div>
+        </StContainer>
+      ) : (
+        <StErrorContainer>
+          <p>올바르지 않은 접근입니다.</p>
+          {/* <Button /> */}
+        </StErrorContainer>
+      )}
     </>
   );
 }
@@ -152,6 +163,29 @@ const StLikeListBox = styled.div`
       height: 20px;
     }
   }
+`;
+
+const StErrorContainer = styled.div`
+  margin-top: 100px;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1200px;
+  padding: 60px 90px;
+  color: #424245;
+  font-size: 32px;
+  font-weight: 600;
+  & > p:nth-child(1) {
+    margin-bottom: 10px;
+  }
+  & > p:nth-child(2) {
+    margin-top: 0;
+  }
+  @media (max-width: 1330px) and (min-width: 400px) {
+    max-width: 900px;
+    padding: 40px 10px;
+    font-size: 26px;
+  }
+  border: 1px solid red;
 `;
 
 // 버튼 공통 스타일링
