@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 
-const Button = ({ btnStyle }) => {
+const Button = ({ btnStyle, onClick }) => {
   const content = btnStyle?.content || "내용 없음";
   return (
-    <StBtn style={btnStyle} type="button">
+    <StBtn style={btnStyle} type="button" onClick={onClick}>
       {content}
     </StBtn>
   );
