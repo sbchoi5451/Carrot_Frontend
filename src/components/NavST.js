@@ -1,22 +1,23 @@
 import styled from "styled-components";
 
 export const NavLayout = styled.div`
-  position: fixed;
-  top: 0;
-  display: flex;
-  width: 1200px;
-  height: 100px;
-  align-items: center;
-  justify-content: space-around;
-  background-color: white;
-`;
+position: fixed;
+top: 0;
+display: flex;
+width: 1200px;
+height: 100px;
+align-items: center;
+justify-content: space-between;
+background-color: white;
+`
 
 export const MenuStyle = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  width: ${(props) => props.width};
-`;
+display: flex;
+align-items: center;
+justify-content: ${props => props.justifycontent ? props.justifycontent : 'space-between'};
+width: ${props => props.width};
+padding-right: ${props => props.paddingright ? props.paddingright : 0}
+`
 
 export const ImgStyle = styled.img`
   width: ${(props) => props.width};

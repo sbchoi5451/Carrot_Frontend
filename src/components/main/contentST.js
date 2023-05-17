@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 export const Layout = styled.div`
-width: 90%;
+width: 100%;
 margin-top: 100px;
 text-align: center;
 `
