@@ -1,10 +1,172 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { styled } from "styled-components";
+import { useNavigate } from "react-router-dom";
+import { useMutation } from "react-query";
 import Button from "../components/Button";
-import logo from "../img/logo.png";
 import Location from "../components/Location";
+import useInput from "../hooks/useInput";
+import { useSelector } from "react-redux";
+import { fetchSignUp } from "../api/signUpApi";
 
 function SignupPage() {
+  const [id, handleChangeId, , idRef] = useInput();
+  const [password, handleChangePassword, , passwordRef] = useInput();
+  const [passwordCheck, handleChangePasswordCheck, , passwordCheckRef] = useInput();
+  const [email, handleChangeEmail, , EmailRef] = useInput();
+  const [phone, , setPhone, phoneRef] = useInput();
+
+  const [userIdError, setUserIdError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [passwordCheckError, setPasswordCheckError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [phoneError, setPhoneError] = useState("");
+  const [locationError, setLocationErrorr] = useState("");
+
+  const locationSlice = useSelector((state) => state.post.tradeLocation);
+  const navigate = useNavigate();
+
+  const { mutate: mutateSignUp } = useMutation(fetchSignUp, {
+    onSuccess: () => {
+      alert("회원가입이 완료되었습니다!");
+      navigate("/login");
+    },
+    onError: (error) => {
+      const message = error.response.data;
+      return alert(message);
+    },
+  });
+
+  // 아이디 중복검사 해야합니다!
+
+  // 아이디 유효성 검사
+  useEffect(() => {
+    const idPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d_]{5,12}$/;
+    if (!!id && !idPattern.test(id)) {
+      return setUserIdError("5~12자 이내의 영문,숫자 조합을 입력하세요.");
+    } else {
+      setUserIdError("");
+    }
+  }, [id]);
+
+  // 비밀번호 유효성 검사
+  useEffect(() => {
+    const pwPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!?_]{5,12}$/;
+    if (!!password && !pwPattern.test(password)) {
+      return setPasswordError("5~12자 이내의 영문,숫자 조합을 입력하세요.");
+    } else {
+      setPasswordError("");
+    }
+  }, [password]);
+
+  // 비밀번호 일치 검사
+  useEffect(() => {
+    if (!!passwordCheck && passwordCheck !== password) {
+      setPasswordCheckError("비밀번호가 일치하지 않습니다.");
+    }
+    if (!!password && passwordCheck === password) {
+      setPasswordCheckError("비밀번호가 일치합니다.");
+    }
+  }, [password, passwordCheck]);
+
+  // 이메일 유효성 검사 함수
+  const handleEmailValidCheck = () => {
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!!email && !emailPattern.test(email)) {
+      EmailRef.current.focus();
+      return setEmailError("이메일 형식이 올바르지 않습니다.");
+    } else return setEmailError("");
+  };
+
+  // 이메일 유효성 검사
+  useEffect(() => {
+    handleEmailValidCheck();
+  }, [email]);
+
+  // 전화번호 유효성 검사 함수
+  const handlePhoneValidCheck = (e) => {
+    let phoneNumber = e.target.value;
+
+    // 숫자값인지 검사
+    if (isNaN(phoneNumber.replace(/-/g, ""))) {
+      return;
+    }
+
+    // 전화번호 길이 검사
+    if (phoneNumber.replace(/-/g, "").length > 11) {
+      return;
+    }
+
+    // Automatically add "-" after 3 and 7 index.
+    if (phoneNumber.length === 3 || phoneNumber.length === 8) {
+      phoneNumber += "-";
+    }
+
+    setPhone(phoneNumber);
+  };
+
+  // 주소지 유효성 검사
+  useEffect(() => {
+    if (locationSlice.gu) {
+      setLocationErrorr("");
+    }
+  }, [locationSlice]);
+
+  // 취소 버튼 클릭시
+  const handleCancleBtnClick = () => {
+    window.history.back();
+  };
+
+  // 회원가입 버튼 클릭시
+  const handleSignUpBtnClick = (e) => {
+    e.preventDefault();
+    if (!id) {
+      idRef.current.focus();
+      return setUserIdError("아이디를 입력하세요.");
+    }
+    if (!password) {
+      passwordRef.current.focus();
+      return setPasswordError("비밀번호를 입력하세요.");
+    }
+    if (!passwordCheck) {
+      passwordCheckRef.current.focus();
+      return setPasswordCheckError("비밀번호를 한 번 더 입력하세요.");
+    }
+    if (password !== passwordCheck) {
+      passwordCheckRef.current.focus();
+      return setPasswordCheckError("비밀번호가 일치하지 않습니다.");
+    }
+    if (!email) {
+      EmailRef.current.focus();
+      return setEmailError("이메일을 입력하세요.");
+    }
+    if (emailError) {
+      return EmailRef.current.focus();
+    }
+    if (!phone) {
+      phoneRef.current.focus();
+      return setPhoneError("전화번호를 입력하세요.");
+    }
+    if (!locationSlice.si || !locationSlice.gu || !locationSlice.dong) {
+      return setLocationErrorr("주소지를 모두 입력하세요.");
+    }
+
+    // 주소 문자열로 합치기
+    const location = `${locationSlice.si} ${locationSlice.gu} ${locationSlice.dong}`;
+
+    // newUser 생성
+    const newUser = {
+      userId: id,
+      password,
+      email,
+      phone: phone.replaceAll("-", ""),
+      location,
+    };
+    console.log("회원가입 유저 전송", newUser);
+
+    // fetchSignUp 함수 mutateSignUp로 실행
+    mutateSignUp(newUser);
+  };
+
   // 버튼 prop
   const idCheckBtnStyle = { backgroundColor: "#ff7e36", content: "중복 확인", maxWidth: "100px", mediaSize: "80px" };
   const cancleBtnStyle = { backgroundColor: "#D9D9D9", content: "취소", maxWidth: "220px" };
@@ -13,45 +175,106 @@ function SignupPage() {
   return (
     <StContainer>
       <StLoginBox>
-        <StLogo src={logo} alt="항해마켓 로고" />
+        <StLogo src="img/dang.png" alt="당근마켓 로고" />
         <StInputLabel htmlFor="idInput">
           <StInputLabelWrapper>
             <span>아이디</span>
             <StIdInputGroupWrapper>
-              <StCommonInp id="idInput" type="text" placeholder="아이디는 4~12자 이내로 입력하세요." aria-describedby="idInputError" />
+              <StCommonInp
+                value={id}
+                onChange={handleChangeId}
+                ref={idRef}
+                id="idInput"
+                type="text"
+                placeholder="아이디는 5~12자 이내로 입력하세요."
+                aria-describedby="idInputError"
+              />
               <Button btnStyle={idCheckBtnStyle} />
             </StIdInputGroupWrapper>
-            <div role="alert" id="idInputError"></div>
+            <div role="alert" id="idInputError">
+              {userIdError}
+            </div>
           </StInputLabelWrapper>
         </StInputLabel>
         <StInputLabel htmlFor="pwInput">
           <StInputLabelWrapper>
             <span>비밀번호</span>
-            <StCommonInp id="v" type="password" placeholder="비밀번호는 4~12자 이내로 입력하세요." aria-describedby="pwInputError" />
-            <div role="alert" id="pwInputError"></div>
+            <StCommonInp
+              value={password}
+              onChange={handleChangePassword}
+              ref={passwordRef}
+              id="pwInput"
+              type="password"
+              placeholder="비밀번호는 5~12자 이내로 입력하세요."
+              aria-describedby="pwInputError"
+            />
+            <div role="alert" id="pwInputError">
+              {passwordError}
+            </div>
           </StInputLabelWrapper>
         </StInputLabel>
         <StInputLabel htmlFor="pwCheckInput">
           <StInputLabelWrapper>
             <span>비밀번호 확인</span>
-            <StCommonInp id="pwCheckInput" type="password" placeholder="비밀번호를 확인하세요." aria-describedby="pwCheckInputError" />
-            <div role="alert" id="pwCheckInputError"></div>
+            <StCommonInp
+              value={passwordCheck}
+              onChange={handleChangePasswordCheck}
+              ref={passwordCheckRef}
+              id="pwCheckInput"
+              type="password"
+              placeholder="비밀번호를 확인하세요."
+              aria-describedby="pwCheckInputError"
+            />
+            <div role="alert" id="pwCheckInputError">
+              {passwordCheckError}
+            </div>
           </StInputLabelWrapper>
         </StInputLabel>
         <StInputLabel htmlFor="emailInput">
           <StInputLabelWrapper>
             <span>이메일</span>
-            <StCommonInp id="emailInput" type="text" placeholder="이메일을 입력하세요." aria-describedby="emailInputError" />
-            <div role="alert" id="emailInputError"></div>
+            <StCommonInp
+              value={email}
+              onChange={handleChangeEmail}
+              ref={EmailRef}
+              id="emailInput"
+              type="text"
+              placeholder="이메일을 입력하세요."
+              aria-describedby="emailInputError"
+            />
+            <div role="alert" id="emailInputError">
+              {emailError}
+            </div>
+          </StInputLabelWrapper>
+        </StInputLabel>
+        <StInputLabel htmlFor="phoneInput">
+          <StInputLabelWrapper>
+            <span>전화번호</span>
+            <StCommonInp
+              value={phone}
+              onChange={handlePhoneValidCheck}
+              pattern="01[0-9]-\d{4}-\d{4}"
+              ref={phoneRef}
+              id="phoneInput"
+              type="text"
+              placeholder="전화번호를 입력하세요."
+              aria-describedby="phoneInputError"
+            />
+            <div role="alert" id="phoneInputError">
+              {phoneError}
+            </div>
           </StInputLabelWrapper>
         </StInputLabel>
         <StInputLabelWrapper>
           <span>주소지</span>
-          <Location />
+          <Location aria-describedby="locationInputError" />
+          <div role="alert" id="locationInputError">
+            {locationError}
+          </div>
         </StInputLabelWrapper>
         <StBtnBox>
-          <Button btnStyle={cancleBtnStyle} />
-          <Button btnStyle={signUpBtnStyle} />
+          <Button btnStyle={cancleBtnStyle} onClick={handleCancleBtnClick} />
+          <Button btnStyle={signUpBtnStyle} onClick={handleSignUpBtnClick} />
         </StBtnBox>
       </StLoginBox>
     </StContainer>
@@ -68,7 +291,7 @@ const StContainer = styled.div`
   width: 100%;
 `;
 
-const StLoginBox = styled.div`
+const StLoginBox = styled.form`
   width: 100%;
   max-width: 638px;
   display: flex;
@@ -85,13 +308,14 @@ const StLoginBox = styled.div`
 `;
 
 const StLogo = styled.img`
-  width: 129px;
-  height: 134px;
+  width: 220px;
+  padding: 20px 0 35px 0;
+  box-sizing: border-box;
   margin: 0 auto;
   margin-bottom: 11px;
   @media (max-width: 1330px) and (min-width: 400px) {
-    width: 116px;
-    height: 120px;
+    width: 150px;
+    padding: 15px 0 25px 0;
   }
 `;
 
@@ -118,7 +342,18 @@ const StInputLabelWrapper = styled.div`
   }
 
   div[role="alert"] {
-    /* 에러 메시지 스타일링 */
+    font-size: 14px;
+    /* border: 1px solid red; */
+    text-align: left;
+    position: relative;
+    bottom: 20px;
+    padding: 0 10px;
+    color: #ffa42c;
+  }
+  div#locationInputError {
+    z-index: -1;
+    bottom: 0;
+    top: 5px;
   }
 
   span {
