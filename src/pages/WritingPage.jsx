@@ -1,51 +1,96 @@
 import React, { useEffect, useState } from "react";
-import ImageUpload from "../components/ImageUpload";
+import ImageUpload from "../components/writing/ImageUpload";
 import { styled } from "styled-components";
 import Location from "../components/Location";
 import { useSelector } from "react-redux";
 import NavBar from "../components/NavBar";
+import useInput from "../hooks/useInput";
+import useToggle from "../hooks/useToggle";
 
 const WritingPage = () => {
-  const postSlice = useSelector((state) => state.post);
-  const LocationSlice = postSlice.tradeLocation;
+  // 게시글 입력값 상태
+  const [title, handleChangeTitle, , titleRef] = useInput();
+  const [price, handleChangePrice, , priceRef] = useInput();
+  const [isShared, handleChangeShared] = useToggle();
+  const [content, handleChangeContent, , contentRef] = useInput();
+  const [specificLocation, handleChangeSpecificLocation, , specificLocationRef] = useInput();
+
+  // 주소 입력 palceholder 상태
   const [userTradeLocation, setUserTradeLocation] = useState("상세주소를 입력해주세요.");
 
-  // 취소 버튼 클릭
+  // post slice 가져오기
+  const postSlice = useSelector((state) => state.post);
+  const locationSlice = postSlice.tradeLocation;
+  const imageSlice = postSlice.image;
 
-  // 완료 버튼 클릭
+  // 주소 문자열로 합치기
+  const tradeLocation = `${locationSlice.si} ${locationSlice.gu} ${locationSlice.dong}`;
+
+  // 취소 버튼 클릭시
+  const handleCancleBtnClick = () => {
+    window.history.back();
+  };
+
+  // 완료 버튼 클릭시
+  const handlePostCompleteBtnClick = () => {
+    const newPost = {
+      image: imageSlice,
+      title,
+      content,
+      price,
+      // tradeLocation,
+      // DB 한글 이슈로 '37' 라인 블락하고 '39' 라인으로 사용
+      tradeLocation: "abcd",
+
+      // specificLocation,
+      // DB 한글 이슈로 '42' 라인 블락하고 '44' 라인으로 사용
+      specificLocation: "efg",
+      isShared,
+    };
+    console.log("요청시 이 데이터가 전송됩니다", newPost);
+  };
 
   // 상세주소 입력 input placeholder 설정
   useEffect(() => {
-    if (LocationSlice.si && LocationSlice.gu && LocationSlice.dong) {
-      const si = LocationSlice.si;
-      const gu = LocationSlice.gu;
-      const dong = LocationSlice.dong;
+    if (locationSlice.si && locationSlice.gu && locationSlice.dong) {
+      const si = locationSlice.si;
+      const gu = locationSlice.gu;
+      const dong = locationSlice.dong;
       setUserTradeLocation(`${si} ${gu} ${dong}의 상세 주소를 입력해주세요.`);
     }
-  }, [LocationSlice]);
+  }, [locationSlice]);
 
   return (
     <>
       <NavBar />
       <StContainer>
         <StBtnBox>
-          <StCancleBtn type="button">취소</StCancleBtn>
-          <StCompleteBtn type="button">완료</StCompleteBtn>
+          <StCancleBtn type="button" onClick={handleCancleBtnClick}>
+            취소
+          </StCancleBtn>
+          <StCompleteBtn type="button" onClick={handlePostCompleteBtnClick}>
+            완료
+          </StCompleteBtn>
         </StBtnBox>
         <ImageUpload />
-        <StTitleInput type="text" placeholder="글 제목" />
+        <StTitleInput value={title} onChange={handleChangeTitle} type="text" placeholder="글 제목" />
         <StPriceBox>
-          <StPriceInput type="text" placeholder="가격" />
+          <StPriceInput value={price} onChange={handleChangePrice} type="text" placeholder="가격" />
           <label htmlFor="isSharing">
-            <StSharingInput type="checkBox" id="isSharing" />
+            <StSharingInput checked={isShared} onChange={handleChangeShared} type="checkBox" id="isSharing" />
             나눔
           </label>
         </StPriceBox>
-        <StTextArea rows={12} placeholder="게시글 내용을 작성해주세요. (판매 금지 물품은 게시가 제한될 수 있어요.)"></StTextArea>
+        <StTextArea
+          value={content}
+          onChange={handleChangeContent}
+          rows={12}
+          placeholder="게시글 내용을 작성해주세요. (판매 금지 물품은 게시가 제한될 수 있어요.)"
+        ></StTextArea>
         <div>
           <p>거래 희망 장소</p>
           <Location />
-          <StSpecificLocationInput type="text" placeholder={userTradeLocation} required />
+          <StSpecificLocationInput value={specificLocation} onChange={handleChangeSpecificLocation} type="text" placeholder={userTradeLocation} required />
         </div>
       </StContainer>
     </>

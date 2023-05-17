@@ -159,7 +159,9 @@ function SignupPage() {
       password,
       email,
       phone: phone.replaceAll("-", ""),
-      location,
+      // location,
+      // DB 한글 이슈로 '162' 라인 블락하고 '164' 라인으로 사용
+      location: "abcd",
     };
     console.log("회원가입 유저 전송", newUser);
 

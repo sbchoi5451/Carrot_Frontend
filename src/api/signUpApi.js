@@ -1,4 +1,5 @@
 import axios from "axios";
+import Cookies from "js-cookie";
 
 const axiosInstance = axios.create({
   baseURL: process.env.REACT_APP_URL,
@@ -19,9 +20,23 @@ export const fetchSignUp = async (user) => {
 export const fetchLogin = async (user) => {
   try {
     const response = await axiosInstance.post("/user/login", user);
-    console.log("응답 헤더", response.header);
-    return;
+
+    if (response.status === 200) {
+      const accessToken = response.headers["access_key"];
+      const refreshToken = response.headers["refresh_key"];
+
+      if (accessToken && refreshToken) {
+        Cookies.set("access-token", accessToken);
+        Cookies.set("refresh-token", refreshToken);
+      }
+
+      return response.data.msg;
+    }
   } catch (err) {
-    console.log(err);
+    if (err.response) {
+      console.log(err.response.data);
+    } else {
+      console.log(err);
+    }
   }
 };
