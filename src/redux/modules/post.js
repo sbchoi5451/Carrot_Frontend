@@ -20,11 +20,14 @@ const postSlice = createSlice({
         tradeLocation: action.payload,
       };
     },
-    addPost: (state, action) => {
-      return { ...state, ...action.payload };
+    setImage: (state, action) => {
+      return {
+        ...state,
+        image: [...action.payload],
+      };
     },
   },
 });
 
-export const { addPost, setTradeLocation } = postSlice.actions;
+export const { setImage, setTradeLocation } = postSlice.actions;
 export default postSlice.reducer;
