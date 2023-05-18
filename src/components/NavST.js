@@ -47,7 +47,7 @@ export const TextStyle = styled.div`
 `;
 
 export const LoginBtn = styled.button`
-  width: 120px;
+  width: 100px;
   height: 32px;
   color: black;
   font-size: 15px;
@@ -55,6 +55,7 @@ export const LoginBtn = styled.button`
   background-color: transparent;
   border: 1px solid black;
   border-radius: 5px;
+  margin-left: 10px;
 
   &:hover {
     cursor: pointer;
@@ -63,7 +64,3 @@ export const LoginBtn = styled.button`
     color: black;
   }
 `;
-
-export const WelcomeMsg = styled.span`
-font-size: 15px;
-`

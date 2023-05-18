@@ -10,17 +10,19 @@ function MainContent() {
     const navigation = useNavigate();
     const queryClient = useQueryClient();
 
-    const { data } = useQuery(['mainContent'], () => getPost())
+    const { data = [] } = useQuery(['mainContent'], () => getPost())
 
     const detailNavHandler = (postId) => {
         navigation(`/detail/${postId}`);
     }
 
+    const sortingData = data?.sort((a,b) => b.interestCount - a.interestCount)?.slice(0,12)
+
     return (
         <st.Layout>
             <h2>중고거래 인기매물</h2>
             <st.Contanier>
-                {data && data.map((item) => (
+                {sortingData && sortingData.map((item) => (
                     <st.Item key={item.postId} >
                         <st.ImageContainer>
                             <st.Image src={item.postImage} onClick={() => detailNavHandler(item.postId)}/>

@@ -52,7 +52,6 @@ const WritingPage = () => {
       specificLocation,
       isShared,
     };
-
     fetchAddPost(newPost);
     console.log(newPost);
     alert("글 작성이 완료되었습니다!");

@@ -23,6 +23,8 @@ function List() {
         navigation(`/detail/${postId}`);
     }
 
+    // const sortingData = listData?.sort((a,b) => b.interestCount - a.interestCount)
+
     return (
         <st.Layout>
 
@@ -30,13 +32,13 @@ function List() {
                 <st.MoreContent>
                     {searchValue ?
                         <div className='title'>검색결과</div>
-                        : <div className='title'>항해마켓 인기중고</div>
+                        : <div className='title'>항해마켓 중고내역</div>
                     }
 
                 </st.MoreContent>
 
                 <st.MoreWrap>
-                    {listData?.map((item) => (
+                    {listData && listData.map((item) => (
                         <st.MoreItem key={item.postId}>
                             <st.ImageContainer>
                                 <st.Image src={item.postImage} onClick={() => detailNavHandler(item.postId)} />

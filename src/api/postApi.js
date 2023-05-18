@@ -23,7 +23,7 @@ export const getPost = async () => {
         const response = await postApi.get("/post")
         return response.data.data
     } catch (err) {
-        return err.response.status
+        console.log(err.response)
     }
 }
 
@@ -33,7 +33,7 @@ export const getRecommendPost = async () => {
         const response = await postApi.get("/post/recommend")
         return response.data.data
     } catch (err) {
-        return err.response.status
+        console.log(err.response)
     }
 }
 
@@ -43,7 +43,7 @@ export const getKeywordApi = async (searchState) => {
         const response = await postApi.get(`/post/search?keyword=${searchState}`)
         return response.data.data
     } catch (err) {
-        return err.response.status
+        console.log(err.response)
     }
 }
 
@@ -57,10 +57,9 @@ export const getDetail = async (postId) => {
             },
         }
         const response = await postApi.get(`/post/${postId}`, config)
-        console.log(response.data.data)
         return response.data.data
     } catch (err) {
-        return err.response.status
+        console.log(err.response)
     }
 }
 
@@ -75,7 +74,7 @@ export const tradeStatePost = async (postId, tradeState) => {
         }
         await postApi.post(`/post/${postId}/tradestatus`, tradeState, config)
     } catch (err) {
-        return err.response.status
+        console.log(err.response)
     }
 }
 
@@ -91,8 +90,7 @@ export const interestPost = async (postId, interest) => {
         }
         await postApi.post(`/post/${postId}/interest`, interest, config)
     } catch (err) {
-        console.log(err)
-        return err.response.status
+        console.log(err.response)
     }
 }
 
@@ -106,8 +104,9 @@ export const modifyPost = async (postId, newData) => {
             },
         }
         await postApi.put(`/post/${postId}`, newData, config)
+        return alert('수정되었습니다')
     } catch (err) {
-        return err.response.status
+        return alert('권한이 없습니다')
     }
 }
 
@@ -121,10 +120,10 @@ export const getMyInterest = async () => {
             },
         }
         const response = await postApi.get('/mypage/interest', config)
-        console.log('요거는 get interest', response.data.data)
+        // console.log('요거는 get interest', response) //??
         return response.data.data
     } catch (err) {
-        return err.response.status
+        console.log(err.response)
     }
 }
 
@@ -138,13 +137,13 @@ export const deleteMyPost = async (postId) => {
             }
         }
         await postApi.delete(`/post/${postId}/delete`, config)
-        return;
+        return alert('삭제되었습니다')
     } catch (err) {
-        return err.response.status
+        return alert('권한이 없습니다')
     }
 }
 
-export const updateMyPost = async (postId) => {
+export const updateMyPost = async (postId, newPost) => {
     try {
         const config = {
             headers: {
@@ -152,9 +151,24 @@ export const updateMyPost = async (postId) => {
                 refresh_key: getRefreshToken(),
             }
         }
-        await postApi.put(`/post/up/${postId}`, config)
+        await postApi.put(`/post/up/${postId}`, newPost, config)
+        return alert('수정되었습니다')
+    } catch (err) {
+        return alert('권한이 없습니다')
+    }
+}
+
+export const editTradeState = async (postId, tradeState) => {
+    try {
+        const config = {
+            headers: {
+                access_key: getAccessToken(),
+                refresh_key: getRefreshToken(),
+            }
+        }
+        await postApi.post(`/post/${postId}/tradestatus`, tradeState, config)
         return;
     } catch (err) {
-        return err.response.status
+        return;
     }
 }

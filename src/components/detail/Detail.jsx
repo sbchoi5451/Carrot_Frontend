@@ -4,46 +4,27 @@ import * as sst from '../main/slideST.js'
 import { useNavigate, useParams } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { deleteMyPost, getDetail, getMyInterest, getPost, interestPost, updateMyPost } from '../../api/postApi';
+import { async } from 'q';
+import Cookies from 'js-cookie';
 
 function Detail() {
 
     const navigation = useNavigate();
     const [interest, setInterest] = useState(false);
 
-    useEffect(() => {
-        window.scrollTo(0, 0);
-    }, [])
-
     const params = useParams();
     const postId = params.id;
     const queryClient = useQueryClient();
 
-    const { data: detailData } = useQuery('detailData', () => getDetail(postId), {
-        onError: (error) => {
-            if (error === 400) {
-                alert('로그인이 필요합니다')
-                navigation('/login')
-            }
-        }
-    })
+    const { data: detailData } = useQuery('detailData', () => getDetail(postId))
 
-    const { data: moreContent } = useQuery('moreContent', () => getPost(), {
-        onError: (error) => {
-            if (error === 400) {
-                alert('로그인이 필요합니다')
-                navigation('/login')
-            }
-        }
-    })
+    const { data: moreContent } = useQuery('moreContent', () => getPost())
 
-    const { data: myInterest } = useQuery('myInterest', () => getMyInterest(), {
-        onError: (error) => {
-            if (error === 400) {
-                alert('로그인이 필요합니다')
-                navigation('/login')
-            }
-        }
-    })
+    const { data: myInterest } = useQuery('myInterest', () => getMyInterest())
+
+    console.log('inter? ', detailData)
+
+    const acc = Cookies.get("access_key")
 
     const currTime = new Date();
     const modiTime = new Date(detailData?.modifiedAt);
@@ -78,13 +59,48 @@ function Detail() {
         interestMutation.mutateAsync(postId, newInterest)
     }
 
-    const deleteBtn = (postId) => {
-        deleteMutation.mutateAsync(postId)
+    const deleteBtn = async (postId) => {
+        if (window.confirm('삭제하시겠습니까?')) {
+            if (acc) {
+                await deleteMutation.mutateAsync(postId);
+                navigation('/list');
+                queryClient.invalidateQueries('moreContent');
+            } else {
+                alert('로그인이 필요합니다')
+                navigation('/login')
+            }
+
+        }
     }
 
     const updateBtn = (postId) => {
         updateMutation.mutateAsync(postId)
     }
+
+    const sortingData = moreContent?.sort((a, b) => b.interestCount - a.interestCount)?.slice(0, 6)
+
+    const onClickEditHandler = (postId) => {
+        if (window.confirm('수정하시겠습니까?')) {
+            if (acc) {
+                navigation(`/edit/${postId}`, { state: { savedData } })
+            } else {
+                alert('로그인이 필요합니다')
+                navigation('/login')
+            }
+
+        } else {
+            return false;
+        }
+    }
+
+    const [savedData, setSavedData] = useState(null)
+
+    useEffect(() => {
+        if (detailData) {
+            window.scrollTo(0, 0);
+            setSavedData(detailData)
+        }
+    }, [detailData, setSavedData])
 
     return (
         <>
@@ -109,11 +125,22 @@ function Detail() {
                             </st.ProfileContent>
                         </st.Profile>
                         <st.extraContent>
-                            {interest ?
+                            {/* { detailData?.myInterest ? <st.StarTrue /> : <st.StarFalse /> } */}
+
+                            {interest ? (
                                 <st.StarTrue onClick={() => interestClickHandler(detailData.postId)} />
-                                : <st.StarFalse onClick={() => interestClickHandler(detailData.postId)} />
-                            }
-                            <div>??</div>
+                            ) : (<st.StarFalse onClick={() => interestClickHandler(detailData.postId)} />
+                            )}
+
+                            {detailData?.tradeState !== undefined && (
+                                <div>
+                                    {detailData.tradeState === 0
+                                        ? "판매중"
+                                        : detailData.tradeState === 1
+                                            ? "예약중"
+                                            : "거래완료"}
+                                </div>
+                            )}
                         </st.extraContent>
                     </st.Content>
 
@@ -130,13 +157,13 @@ function Detail() {
                     </st.Content>
                     <st.modifyBtn>
                         <div>
-                            <span>수정</span>
-                            <span className='deletebtn' onClick={() => deleteBtn(detailData?.postId)}>삭제</span>
+                            <st.updateTimeBtn className='timeupdatebtn' onClick={() => updateBtn(detailData?.postId)} />
                         </div>
 
                         <div>
-                            <span>판매자 문의하기</span>
-                            <button onClick={() => updateBtn(detailData?.postId)}>끌올입니다</button>
+                            {/* <span>판매자 문의하기</span> */}
+                            <span onClick={() => onClickEditHandler(detailData?.postId)}>수정</span>
+                            <span className='deletebtn' onClick={() => deleteBtn(detailData?.postId)}>삭제</span>
                         </div>
                     </st.modifyBtn>
                 </div>
@@ -149,7 +176,7 @@ function Detail() {
                     </st.MoreContent>
 
                     <st.MoreWrap>
-                        {moreContent?.map((item) => (
+                        {sortingData?.map((item) => (
                             <st.MoreItem key={item.postId}>
                                 <st.ImageContainer>
                                     <st.Image src={item.postImage} onClick={() => detailNavHandler(item.postId)} />

@@ -17,18 +17,16 @@ function MainSlide() {
 
   const queryClient = useQueryClient();
 
-  const { data, error } = useQuery('mainSlide', getPost) //recommend 로 수정 필요
+  const { data: slideData = [] } = useQuery('mainSlide', getPost) //recommend 로 수정 필요
+
+  const sortingData = slideData?.sort((a,b) => b.interestCount - a.interestCount)?.slice(0,4)
 
   const prevHandler = () => {
-    setCurrIndex((index) => (index === 0 ? data.length - 1 : index - 1))
+    setCurrIndex((index) => (index === 0 ? sortingData.length - 1 : index - 1))
   }
 
   const nextHandler = () => {
-    setCurrIndex((index) => (index === data.length - 1 ? 0 : index + 1))
-  }
-
-  if (error) {
-    return; //error 코드 작성 필요
+    setCurrIndex((index) => (index === sortingData.length - 1 ? 0 : index + 1))
   }
 
   return (
@@ -37,7 +35,7 @@ function MainSlide() {
         <st.SlideBody>
           <st.LeftMoveBtn onClick={prevHandler} />
           <st.Wrapper width='70%'>
-            {data?.map((item, index) => (
+            {sortingData?.map((item, index) => (
               <st.SlideContent key={index} active={index === currIndex ? 'true' : 'false'}>
                 <div className='img' justify='flex-end'>
                   <st.ImgStyle src={item.postImage} onClick={() => naviDetailBtn({ id: item.id })} />
