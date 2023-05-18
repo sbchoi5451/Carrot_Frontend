@@ -65,7 +65,7 @@ const WritingPage = () => {
       isShared,
     };
     console.log(newPost);
-    mutateAddPost(fetchAddPost(newPost));
+    mutateAddPost(newPost);
   };
 
   // 상세주소 입력 input placeholder 설정
