@@ -20,7 +20,6 @@ export const fetchAddPost = async (post) => {
   try {
     const response = await axiosInstance.post("/post/add", post, {
       headers: {
-        "Content-Type": "multipart/form-data",
         access_key: getAccessToken(),
         refresh_key: getRefreshToken(),
       },
