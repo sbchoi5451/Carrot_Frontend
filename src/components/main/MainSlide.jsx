@@ -38,9 +38,9 @@ function MainSlide() {
           <st.LeftMoveBtn onClick={prevHandler} />
           <st.Wrapper width="70%">
             {sortingData?.map((item, index) => (
-              <st.SlideContent key={index} active={index === currIndex ? "true" : "false"}>
+              <st.SlideContent key={index} active={index === currIndex ? "true" : "false"} onClick={() => naviDetailBtn({ id: item.id })}>
                 <div className="img" justify="flex-end">
-                  <st.ImgStyle src={`/img/tradeImg${number++}.jpeg`} onClick={() => naviDetailBtn({ id: item.id })} />
+                  <st.ImgStyle src={`/img/tradeImg${number++}.jpeg`} />
                 </div>
 
                 <div className="content" justify="flex-start">

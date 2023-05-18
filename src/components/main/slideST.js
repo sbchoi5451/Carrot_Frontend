@@ -63,6 +63,7 @@ export const SlideContent = styled.div`
   display: ${(props) => (props.active === "true" ? "flex" : "none")};
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 
   ${(props) =>
     props.active === "true" &&
