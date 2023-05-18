@@ -27,6 +27,11 @@ function LoginPage() {
     },
   });
 
+  // 로고 클릭시 메인페이지 이동
+  const handleLogoClick = () => {
+    navigate("/");
+  };
+
   // 아이디 유효성 검사
   useEffect(() => {
     const idPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d_]{5,12}$/;
@@ -82,7 +87,7 @@ function LoginPage() {
   return (
     <StContainer>
       <StLoginBox>
-        <StLogo src="img/dang.png" alt="항해마켓 로고" />
+        <StLogo src="img/dang.png" alt="항해마켓 로고" onClick={handleLogoClick} />
         <StLoginInp ref={idRef} type="text" value={id} onChange={handleChangeId} placeholder="아이디를 입력해주세요." aria-describedby="idInputError" />
         <div role="alert" id="idInputError">
           {idError}

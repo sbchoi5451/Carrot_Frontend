@@ -16,7 +16,7 @@ export const fetchInterestedList = async () => {
     });
     return response.data;
   } catch (err) {
-    return err;
+    throw err;
   }
 };
 
@@ -31,6 +31,6 @@ export const fetchTradeList = async () => {
     });
     return response.data;
   } catch (err) {
-    return err;
+    throw err;
   }
 };

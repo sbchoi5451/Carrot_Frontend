@@ -10,11 +10,11 @@ const TradeList = () => {
 
   // 에러일 때
   if (error) {
-    return <span>에러가 발생했습니다: {console.log(error)}</span>;
+    return <StEmptyList>판매 내역을 읽어들일 수 없습니다. {console.log(error)}</StEmptyList>;
   }
   // 로딩 중일 때
   if (!data) {
-    return <span>Loading...</span>;
+    return <StEmptyList>Loading...</StEmptyList>;
   }
 
   // 게시글 눌렀을 때
@@ -28,21 +28,25 @@ const TradeList = () => {
   return (
     <>
       <StContainer>
-        {tradeList.map((post) => {
-          return (
-            <StTradeList key={post.postId} onClick={() => handlePostClick(post.postId)}>
-              <StTradeImg src={post.imagePathList ? post.imagePathList[0] : "/img/dang.png"} alt="상품 이미지"></StTradeImg>
-              <div>
-                <StPostTitle>{post.postTitle}</StPostTitle>
-                <StPostLocation>
-                  {post.tradeLocation} / {post.tradeState === 0 ? "판매중" : post.tradeState === 1 ? "예약중" : "판매완료"}{" "}
-                </StPostLocation>
-                {/* <StPostTradeState>{post.tradeState === 0 ? "판매중" : post.tradeState === 1 ? "예약중" : "판매완료"}</StPostTradeState> */}
-                <StPostPrice>{post.postPrice} 원</StPostPrice>
-              </div>
-            </StTradeList>
-          );
-        })}
+        {tradeList.length === 0 ? (
+          <StEmptyList>판매목록이 아직 없네요!</StEmptyList>
+        ) : (
+          tradeList.map((post) => {
+            return (
+              <StTradeList key={post.postId} onClick={() => handlePostClick(post.postId)}>
+                <StTradeImg src={post.imagePathList ? post.imagePathList[0] : "/img/dang.png"} alt="상품 이미지"></StTradeImg>
+                <div>
+                  <StPostTitle>{post.postTitle}</StPostTitle>
+                  <StPostLocation>
+                    {post.tradeLocation} / {post.tradeState === 0 ? "판매중" : post.tradeState === 1 ? "예약중" : "판매완료"}{" "}
+                  </StPostLocation>
+                  {/* <StPostTradeState>{post.tradeState === 0 ? "판매중" : post.tradeState === 1 ? "예약중" : "판매완료"}</StPostTradeState> */}
+                  <StPostPrice>{post.postPrice} 원</StPostPrice>
+                </div>
+              </StTradeList>
+            );
+          })
+        )}
       </StContainer>
     </>
   );
@@ -54,6 +58,15 @@ const StContainer = styled.div`
   /* border: 1px solid red; */
   padding: 10px 50px;
   color: #515254;
+`;
+
+const StEmptyList = styled.div`
+  border: 2px solid #e9ecef;
+  border-radius: 3px;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 15px;
+  padding: 15px 10px;
 `;
 
 const StTradeList = styled.div`

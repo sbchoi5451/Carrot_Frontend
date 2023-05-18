@@ -10,7 +10,7 @@ const InterestedList = () => {
 
   // 에러일 때
   if (error) {
-    return <span>에러가 발생했습니다: {console.log(error)}</span>;
+    return <span>관심내역을 읽어들이지 못했습니다. {console.log(error)}</span>;
   }
   // 로딩 중일 때
   if (!data) {
@@ -23,26 +23,30 @@ const InterestedList = () => {
   };
 
   const interestedList = data.data;
-  console.log("here", interestedList);
+  console.log(interestedList);
 
   return (
     <>
       <StContainer>
-        {interestedList.map((post) => {
-          return (
-            <StTradeList key={post.postId} onClick={() => handlePostClick(post.postId)}>
-              <StTradeImg src={post.imagePathList ? post.imagePathList : "/img/dang.png"} alt="상품 이미지"></StTradeImg>
-              <div>
-                <StPostTitle>{post.postTitle}</StPostTitle>
-                <StPostLocation>
-                  {post.tradeLocation} / {post.tradeState === 0 ? "판매중" : post.tradeState === 1 ? "예약중" : "판매완료"}{" "}
-                </StPostLocation>
-                {/* <StPostTradeState>{post.tradeState === 0 ? "판매중" : post.tradeState === 1 ? "예약중" : "판매완료"}</StPostTradeState> */}
-                <StPostPrice>{post.postPrice} 원</StPostPrice>
-              </div>
-            </StTradeList>
-          );
-        })}
+        {interestedList.length === 0 ? (
+          <StEmptyList>관심목록이 아직 없네요!</StEmptyList>
+        ) : (
+          interestedList.map((post) => {
+            return (
+              <StTradeList key={post.postId} onClick={() => handlePostClick(post.postId)}>
+                <StTradeImg src={post.imagePathList ? post.imagePathList : "/img/dang.png"} alt="상품 이미지"></StTradeImg>
+                <div>
+                  <StPostTitle>{post.postTitle}</StPostTitle>
+                  <StPostLocation>
+                    {post.tradeLocation} / {post.tradeState === 0 ? "판매중" : post.tradeState === 1 ? "예약중" : "판매완료"}{" "}
+                  </StPostLocation>
+                  {/* <StPostTradeState>{post.tradeState === 0 ? "판매중" : post.tradeState === 1 ? "예약중" : "판매완료"}</StPostTradeState> */}
+                  <StPostPrice>{post.postPrice} 원</StPostPrice>
+                </div>
+              </StTradeList>
+            );
+          })
+        )}
       </StContainer>
     </>
   );
@@ -54,6 +58,15 @@ const StContainer = styled.div`
   /* border: 1px solid red; */
   padding: 10px 50px;
   color: #515254;
+`;
+
+const StEmptyList = styled.div`
+  border: 2px solid #e9ecef;
+  border-radius: 3px;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 15px;
+  padding: 15px 10px;
 `;
 
 const StTradeList = styled.div`

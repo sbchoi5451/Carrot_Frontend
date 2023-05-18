@@ -8,7 +8,7 @@ import useInput from "../hooks/useInput";
 import useToggle from "../hooks/useToggle";
 import { fetchAddPost } from "../api/addPostApi";
 import { useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
+import { useMutation } from "react-query";
 
 const WritingPage = () => {
   // 게시글 입력값 상태
@@ -18,6 +18,18 @@ const WritingPage = () => {
   const [content, handleChangeContent, , contentRef] = useInput();
   const [specificLocation, handleChangeSpecificLocation, , specificLocationRef] = useInput();
   const [uploadedImages, setUploadedImages] = useState();
+
+  const { mutate: mutateAddPost } = useMutation(fetchAddPost, {
+    onSuccess: () => {
+      alert("글 작성이 완료되었습니다!");
+      navigate("/");
+    },
+    onError: (err) => {
+      console.log("ㅇㅇㅇ", err);
+      alert("글 작성에 실패하였습니다.");
+      navigate("/");
+    },
+  });
 
   const navigate = useNavigate();
 
@@ -44,7 +56,7 @@ const WritingPage = () => {
   // 완료 버튼 클릭시
   const handlePostCompleteBtnClick = () => {
     const newPost = {
-      image: uploadedImages,
+      // image: uploadedImages,
       postTitle: title,
       postContent: content,
       postPrice: price,
@@ -52,10 +64,8 @@ const WritingPage = () => {
       specificLocation,
       isShared,
     };
-    fetchAddPost(newPost);
     console.log(newPost);
-    alert("글 작성이 완료되었습니다!");
-    navigate("/");
+    mutateAddPost(fetchAddPost(newPost));
   };
 
   // 상세주소 입력 input placeholder 설정
