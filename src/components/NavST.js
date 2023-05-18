@@ -1,23 +1,23 @@
 import styled from "styled-components";
 
 export const NavLayout = styled.div`
-position: fixed;
-top: 0;
-display: flex;
-width: 1200px;
-height: 100px;
-align-items: center;
-justify-content: space-between;
-background-color: white;
-`
+  position: fixed;
+  top: 0;
+  display: flex;
+  width: 1200px;
+  height: 100px;
+  align-items: center;
+  justify-content: space-between;
+  background-color: white;
+`;
 
 export const MenuStyle = styled.div`
-display: flex;
-align-items: center;
-justify-content: ${props => props.justifycontent ? props.justifycontent : 'space-between'};
-width: ${props => props.width};
-padding-right: ${props => props.paddingright ? props.paddingright : 0}
-`
+  display: flex;
+  align-items: center;
+  justify-content: ${(props) => (props.justifycontent ? props.justifycontent : "space-between")};
+  width: ${(props) => props.width};
+  padding-right: ${(props) => (props.paddingright ? props.paddingright : 0)};
+`;
 
 export const ImgStyle = styled.img`
   width: ${(props) => props.width};
@@ -33,6 +33,8 @@ export const InputStyle = styled.input`
   border: transparent;
   background-color: #f2f3f6;
   font-size: 15px;
+  padding-left: 12px;
+  box-sizing: border-box;
 `;
 
 export const TextStyle = styled.div`
