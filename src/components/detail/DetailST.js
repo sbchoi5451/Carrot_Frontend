@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { AiOutlineHeart, AiTwotoneHeart } from "react-icons/ai";
+import { FiRefreshCw } from "react-icons/fi";
 
 export const Layout = styled.div`
 width: 90%;
@@ -44,7 +45,7 @@ margin-bottom: 10px;
 }
 
 .category {
-font-size: 15px;
+font-size: 12px;
 margin-bottom: 10px;
 }
 
@@ -60,7 +61,7 @@ margin-bottom: 10px;
 }
 
 .interest {
-font-size: 15px;
+font-size: 12px;
 color: grey;
 }
 `
@@ -214,9 +215,11 @@ div {
 .deletebtn {
  margin-left: 7px;
 }
+
+.timeupdatebtn {
+    margin-left: 7px;
 }
-
-
+}
 `
 
 export const extraContent = styled.div`
@@ -226,5 +229,14 @@ div {
     margin-top: 5px;
     font-weight: bold;
     text-align: center;
+}
+`
+
+export const updateTimeBtn = styled(FiRefreshCw)`
+font-size: 15px;
+padding-top: 5px;
+
+&:hover {
+    cursor: pointer;
 }
 `

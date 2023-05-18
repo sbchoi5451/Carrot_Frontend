@@ -18,7 +18,7 @@ function Router() {
           <Route path="/" element={<MainPage />} />
           <Route path="/detail/:id" element={<DetailPage />} />
           <Route path="/post/add" element={<WritingPage />} />
-          <Route path="/post/edit/:id" element={<EditPage />} />
+          <Route path="/edit/:id" element={<EditPage />} />
           <Route path="/list" element={<ListPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/login" element={<LoginPage />} />

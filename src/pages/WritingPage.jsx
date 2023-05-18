@@ -56,7 +56,6 @@ const WritingPage = () => {
       specificLocation,
       isShared,
     };
-
     fetchAddPost(newPost);
   };
 

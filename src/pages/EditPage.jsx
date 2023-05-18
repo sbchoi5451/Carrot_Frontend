@@ -4,18 +4,50 @@ import { styled } from "styled-components";
 import Location from "../components/Location";
 import { useSelector } from "react-redux";
 import NavBar from "../components/NavBar";
-import useInput from "../hooks/useInput";
-import useToggle from "../hooks/useToggle";
 import { fetchAddPost } from "../api/addPostApi";
 import Cookies from "js-cookie";
+import useEditInput from "../hooks/useEditInput";
+import useEditToggle from "../hooks/useEditToggle";
+import { useQuery, useQueryClient } from "react-query";
+import { editTradeState, getDetail, modifyPost, updateMyPost } from "../api/postApi";
+import { useParams } from "react-router";
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const EditPage = () => {
+
+  const navigation = useNavigate()
+  const location = useLocation();
+  const savedData = location.state?.savedData;
+  const beforeTitle = savedData?.postTitle
+  const beforePrice = savedData?.postPrice
+  const beforeContent = savedData?.postContent
+  const beforeIsShared = savedData?.isShared
+  const beforeSpecificLocation = savedData?.specificLocation
+  const beforeTradestate = savedData?.tradeState
+
+  console.log(savedData)
+
   // 게시글 입력값 상태
-  const [title, handleChangeTitle, , titleRef] = useInput();
-  const [price, handleChangePrice, , priceRef] = useInput();
-  const [isShared, handleChangeShared] = useToggle();
-  const [content, handleChangeContent, , contentRef] = useInput();
-  const [specificLocation, handleChangeSpecificLocation, , specificLocationRef] = useInput();
+  const [title, handleChangeTitle, , titleRef] = useEditInput(beforeTitle);
+  const [price, handleChangePrice, , priceRef] = useEditInput(beforePrice);
+  const [isShared, handleChangeShared] = useEditToggle(beforeIsShared);
+  const [content, handleChangeContent, , contentRef] = useEditInput(beforeContent);
+  const [specificLocation, handleChangeSpecificLocation, , specificLocationRef] = useEditInput(beforeSpecificLocation);
+  const [tradeState, setTradeState] = useState(beforeTradestate)
+
+  const options = [
+    { value: 0, label: '판매중' },
+    { value: 1, label: '예약중' },
+    { value: 2, label: '거래완료' }
+  ]
+
+  const onTradestateChange = (e) => {
+    setTradeState(e.target.value)
+  }
+
+  // useEffect(() => {
+
+  // }, [editData])
 
   // 주소 입력 palceholder 상태
   const [userTradeLocation, setUserTradeLocation] = useState("상세주소를 입력해주세요.");
@@ -25,6 +57,9 @@ const EditPage = () => {
   const locationSlice = postSlice.tradeLocation;
   const imageSlice = postSlice.image;
 
+  const params = useParams();
+  const postId = params.id;
+
   // 주소 문자열로 합치기
   const tradeLocation = `${locationSlice.si} ${locationSlice.gu} ${locationSlice.dong}`;
 
@@ -33,22 +68,22 @@ const EditPage = () => {
     window.history.back();
   };
 
-  const access = Cookies.get("access-token")
-  const refresh = Cookies.get("access-token")
-
-  console.log(access, refresh)
-
   // 완료 버튼 클릭시
-  const handlePostCompleteBtnClick = () => {
+  const handlePostCompleteBtnClick = async () => {
     const newPost = {
-      title,
-      content,
-      price,
+      postTitle: title,
+      postContent: content,
+      postPrice: price,
       tradeLocation,
       specificLocation,
       isShared,
-    };
-    fetchAddPost(newPost, access, refresh);
+    }
+    const editStatus = {
+      tradeState: tradeState
+    }
+    await editTradeState(editStatus)
+    await modifyPost(postId, newPost)
+    navigation(`/detail/${postId}`)
   };
 
   // 상세주소 입력 input placeholder 설정
@@ -74,7 +109,13 @@ const EditPage = () => {
           </StCompleteBtn>
         </StBtnBox>
         <ImageUpload />
+        
         <StTitleInput value={title} onChange={handleChangeTitle} type="text" placeholder="글 제목" />
+        <select onChange={onTradestateChange} value={tradeState}>
+          {options?.map(item => {
+            return <option key={item.value} value={item.value}>{item.label}</option>
+          })}
+        </select>
         <StPriceBox>
           <StPriceInput value={price} onChange={handleChangePrice} type="text" placeholder="가격" />
           <label htmlFor="isSharing">
@@ -135,7 +176,7 @@ const StTitleInput = styled.input`
   font-size: 18px;
   border: none;
   border-bottom: 1px solid #e9ecef;
-  width: 100%;
+  width: 90%;
   padding: 10px 5px;
   box-sizing: border-box;
 `;
