@@ -26,13 +26,22 @@ function NavBar() {
   // 유저 정보 받아오기
   const userInfo = fetchUserInfo();
 
+  // 등록하기 버튼 클릭시
+  const handleAddPostBtnClick = () => {
+    if (userInfo) {
+      navigation("/post/add");
+    } else {
+      alert("로그인 후 사용 가능합니다.");
+      navigation("/login");
+    }
+  };
+
   // 로그인 여부
   useEffect(() => {
     if (userInfo) {
       setIsLogin(true);
     }
   }, [userInfo]);
-
 
   // 로그아웃 클릭 시
   const handleLogoutBtnClick = () => {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
@@ -10,18 +10,44 @@ import Cookies from "js-cookie";
 function LoginPage() {
   const [id, handleChangeId, , idRef] = useInput();
   const [password, handleChangePassword, , passwordRef] = useInput();
+  const [idError, setIdError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
 
   const navigate = useNavigate();
   const { mutate: mutateLogin } = useMutation(fetchLogin, {
-    onSuccess: () => {
-      alert("로그인이 완료되었습니다.");
-      navigate("/");
+    onSuccess: (response) => {
+      if (response.data.msg === "성공") {
+        return navigate("/");
+      }
+      return alert(response.data.msg);
     },
     onError: (error) => {
-      const message = error.response;
-      return alert(message);
+      console.log(error);
+      alert("요청이 실패했습니다. 다시 시도해주세요!");
     },
   });
+
+  // 아이디 유효성 검사
+  useEffect(() => {
+    const idPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d_]{5,12}$/;
+    if (!!id && !idPattern.test(id)) {
+      return setIdError("5~12자 이내의 영문,숫자 조합을 입력하세요.");
+    }
+    if (id) {
+      setIdError("");
+    }
+  }, [id]);
+
+  // 비밀번호 유효성 검사
+  useEffect(() => {
+    const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d_]{5,12}$/;
+    if (!!password && !passwordPattern.test(password)) {
+      return setPasswordError("5~12자 이내의 영문,숫자 조합을 입력하세요.");
+    }
+    if (password) {
+      setPasswordError("");
+    }
+  }, [password]);
 
   // 회원가입 버튼 클릭시
   const handleSignUpBtnClick = () => {
@@ -30,14 +56,25 @@ function LoginPage() {
 
   // 로그인 버튼 클릭시
   const handleLoginBtnClick = () => {
+    if (!id) {
+      idRef.current.focus();
+      return setIdError("아이디를 입력하세요");
+    }
+    if (!password) {
+      passwordRef.current.focus();
+      return setPasswordError("비밀번호를 입력하세요.");
+    }
+    if (idError || passwordError) {
+      return;
+    }
     const user = {
       userId: id,
       password,
     };
     mutateLogin(user);
-    sessionStorage.setItem("userId", id)
+    sessionStorage.setItem("userId", id);
   };
-  
+
   // 버튼 prop
   const signUpBtnStyle = { backgroundColor: "#ff7e36", content: "회원가입", maxWidth: "220px" };
   const loginBtnStyle = { backgroundColor: "#ff7e36", content: "로그인", maxWidth: "220px" };
@@ -46,10 +83,21 @@ function LoginPage() {
     <StContainer>
       <StLoginBox>
         <StLogo src="img/dang.png" alt="항해마켓 로고" />
-        <StLoginInp type="text" value={id} onChange={handleChangeId} placeholder="아이디를 입력해주세요." aria-describedby="idInputError" />
-        <div role="alert" id="idInputError"></div>
-        <StLoginInp type="password" value={password} onChange={handleChangePassword} placeholder="비밀번호를 입력해주세요." aria-describedby="pwInputError" />
-        <div role="alert" id="pwInputError"></div>
+        <StLoginInp ref={idRef} type="text" value={id} onChange={handleChangeId} placeholder="아이디를 입력해주세요." aria-describedby="idInputError" />
+        <div role="alert" id="idInputError">
+          {idError}
+        </div>
+        <StLoginInp
+          ref={passwordRef}
+          type="password"
+          value={password}
+          onChange={handleChangePassword}
+          placeholder="비밀번호를 입력해주세요."
+          aria-describedby="pwInputError"
+        />
+        <div role="alert" id="pwInputError">
+          {passwordError}
+        </div>
         <StBtnBox>
           <Button btnStyle={signUpBtnStyle} onClick={handleSignUpBtnClick} />
           <Button btnStyle={loginBtnStyle} onClick={handleLoginBtnClick} />
@@ -79,6 +127,14 @@ const StLoginBox = styled.div`
   border-radius: 18px;
   box-sizing: border-box;
   padding: 20px 90px 101px;
+  div[role="alert"] {
+    font-size: 14px;
+    text-align: left;
+    position: relative;
+    bottom: 14px;
+    padding: 0 10px;
+    color: #ffa42c;
+  }
   @media (max-width: 1330px) and (min-width: 400px) {
     max-width: 500px;
     padding: 20px 90px 50px;

@@ -1,59 +1,26 @@
 import React, { useState } from "react";
 import { styled } from "styled-components";
-import { useDispatch } from "react-redux";
-import { setImage } from "../../redux/modules/post";
 
 function ImageUpload({ onImageUpload }) {
-  const dispatch = useDispatch();
   const [selectedImage, setSelectedImage] = useState([]);
+  const [fileList, setFileList] = useState([]);
   let imageCount = 0;
 
-  // const handleImageUpload = (event) => {
-  //   // input.files는 유사배열객체 {[index] : file, length: 1}
-  //   const file = event.target.files;
-  //   const reader = new FileReader();
-  //   const fileArray = Array.from(file);
-
-  //   // fileReading이 끝나면 진행되는 부분
-  //   reader.onloadend = () => {
-  //     setSelectedImage([reader.result, ...selectedImage]);
-  //     onImageUpload(file);
-  //     console.log("여기는 file확인", file);
-  //   };
-
-  //   // fileArray의 file마다 url reading하는 부분
-  //   fileArray.map((file) => reader.readAsDataURL(file));
-  // };
-
   const handleImageUpload = (event) => {
-    const files = event.target.files;
-    const fileArray = Array.from(files);
+    // input.files는 유사배열객체 {[index] : file, length: 1}
+    const file = event.target.files;
+    const reader = new FileReader();
+    const fileArray = Array.from(file);
 
-    const promises = fileArray.map((file) => {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
+    // fileReading이 끝나면 진행되는 부분
+    reader.onloadend = () => {
+      setSelectedImage([reader.result, ...selectedImage]);
+      onImageUpload(file);
+      console.log("file 어떻게 가는지", file);
+    };
 
-        reader.onloadend = () => {
-          // reader.result contains the Base64 string of the image
-          resolve(reader.result);
-        };
-
-        reader.onerror = reject;
-
-        reader.readAsDataURL(file);
-      });
-    });
-
-    Promise.all(promises)
-      .then((images) => {
-        // 이전에 업로드된 이미지와 새로 업로드된 이미지를 함께 상태에 추가합니다.
-        setSelectedImage((prevImages) => [...prevImages, ...images]);
-        onImageUpload(fileArray); // 이 부분은 파일 객체를 넘겨줍니다.
-        console.log("이미지 보내고 난 후", fileArray);
-      })
-      .catch((error) => {
-        console.error("Error occurred while reading files:", error);
-      });
+    // fileArray의 file마다 url reading하는 부분
+    fileArray.map((file) => reader.readAsDataURL(file));
   };
 
   return (

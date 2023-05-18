@@ -16,15 +16,26 @@ export const getRefreshToken = () => {
   return Cookies.get("refresh_key");
 };
 
+// 회원가입 - 아이디 중복검사
+export const fetchCheckId = async (id) => {
+  try {
+    const response = await axiosInstance.post("/user/idCheck", id);
+    if (response.data.msg === "사용중인 아이디입니다.") {
+      return response.data.msg;
+    }
+    if (response.data.msg === "사용 가능한 아이디입니다.") return response.data.msg;
+  } catch (err) {
+    console.log("catch문 err:", err.response);
+  }
+};
+
 // 회원가입
 export const fetchSignUp = async (user) => {
   try {
     const response = await axiosInstance.post("/user/signup", user);
-    console.log(response);
-    return;
+    return response;
   } catch (err) {
-    console.log(err);
-    return err.data;
+    return err;
   }
 };
 
@@ -33,24 +44,18 @@ export const fetchLogin = async (user) => {
   try {
     const response = await axiosInstance.post("/user/login", user);
 
-    if (response.status === 200) {
+    if (response.data.msg === "성공") {
       const accessToken = response.headers["access_key"];
       const refreshToken = response.headers["refresh_key"];
       const token = accessToken.replace("Bearer", "");
-
       if (accessToken && refreshToken) {
         Cookies.set("access_key", accessToken);
         Cookies.set("refresh_key", refreshToken);
       }
-
-      return response.data.msg;
     }
+    return response;
   } catch (err) {
-    if (err.response) {
-      console.log(err.response.data);
-    } else {
-      console.log(err);
-    }
+    return err;
   }
 };
 
@@ -84,4 +89,3 @@ export const fetchUserInfo = () => {
     return null;
   }
 };
-
