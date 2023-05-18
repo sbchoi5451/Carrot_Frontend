@@ -16,6 +16,7 @@ function ImageUpload({ onImageUpload }) {
     reader.onloadend = () => {
       setSelectedImage([reader.result, ...selectedImage]);
       onImageUpload(file);
+      console.log("file 어떻게 가는지", file);
     };
 
     // fileArray의 file마다 url reading하는 부분

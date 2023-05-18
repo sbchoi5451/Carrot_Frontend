@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { styled } from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
@@ -6,7 +6,8 @@ import Button from "../components/Button";
 import Location from "../components/Location";
 import useInput from "../hooks/useInput";
 import { useSelector } from "react-redux";
-import { fetchSignUp } from "../api/signUpApi";
+import { fetchCheckId, fetchSignUp } from "../api/signUpApi";
+import useToggle from "../hooks/useToggle";
 
 function SignupPage() {
   const [id, handleChangeId, , idRef] = useInput();
@@ -22,13 +23,19 @@ function SignupPage() {
   const [phoneError, setPhoneError] = useState("");
   const [locationError, setLocationErrorr] = useState("");
 
+  const [isIdUnique, , setIsIdUnique] = useToggle();
+
   const locationSlice = useSelector((state) => state.post.tradeLocation);
   const navigate = useNavigate();
 
   const { mutate: mutateSignUp } = useMutation(fetchSignUp, {
-    onSuccess: () => {
-      alert("회원가입이 완료되었습니다!");
-      navigate("/login");
+    onSuccess: (response) => {
+      if (response.status === 200) {
+        alert("회원가입이 완료되었습니다!");
+        navigate("/login");
+      } else {
+        console.log("여기서 출력", response);
+      }
     },
     onError: (error) => {
       const message = error.response.data;
@@ -36,10 +43,24 @@ function SignupPage() {
     },
   });
 
+  const { mutate: mutateCheckId } = useMutation(fetchCheckId, {
+    onSuccess: (response) => {
+      if (response === "사용중인 아이디입니다.") {
+        alert(response);
+        return;
+      }
+      if (response === "사용 가능한 아이디입니다.") {
+        setIsIdUnique((isIdUnique) => true);
+      }
+    },
+    onError: (error) => {
+      console.log("실패", error);
+    },
+  });
+
   // 아이디 중복검사
   const handleCheckIdBtnClick = () => {
-    const err = fetchSignUp(id);
-    console.log("err msg", err.msg);
+    mutateCheckId({ userId: id });
   };
 
   // 아이디 유효성 검사
@@ -47,10 +68,14 @@ function SignupPage() {
     const idPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d_]{5,12}$/;
     if (!!id && !idPattern.test(id)) {
       return setUserIdError("5~12자 이내의 영문,숫자 조합을 입력하세요.");
-    } else {
-      setUserIdError("");
     }
-  }, [id]);
+    if (id && !isIdUnique) {
+      return setUserIdError("아이디 중복을 확인하세요.");
+    }
+    if (id && isIdUnique) {
+      return setUserIdError("사용 가능한 아이디입니다.");
+    }
+  }, [id, isIdUnique]);
 
   // 비밀번호 유효성 검사
   useEffect(() => {
@@ -127,6 +152,9 @@ function SignupPage() {
       idRef.current.focus();
       return setUserIdError("아이디를 입력하세요.");
     }
+    if (!isIdUnique) {
+      return setUserIdError("아이디 중복을 확인하세요.");
+    }
     if (!password) {
       passwordRef.current.focus();
       return setPasswordError("비밀번호를 입력하세요.");
@@ -165,7 +193,6 @@ function SignupPage() {
       phone: phone.replaceAll("-", ""),
       location,
     };
-    console.log("회원가입 유저 전송", newUser);
 
     // fetchSignUp 함수 mutateSignUp로 실행
     mutateSignUp(newUser);

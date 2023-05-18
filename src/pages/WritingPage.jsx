@@ -7,8 +7,8 @@ import NavBar from "../components/NavBar";
 import useInput from "../hooks/useInput";
 import useToggle from "../hooks/useToggle";
 import { fetchAddPost } from "../api/addPostApi";
+import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
-
 
 const WritingPage = () => {
   // 게시글 입력값 상태
@@ -17,11 +17,13 @@ const WritingPage = () => {
   const [isShared, handleChangeShared] = useToggle();
   const [content, handleChangeContent, , contentRef] = useInput();
   const [specificLocation, handleChangeSpecificLocation, , specificLocationRef] = useInput();
-  const [uploadedImages, setUploadedImages] = useState([]);
+  const [uploadedImages, setUploadedImages] = useState();
+
+  const navigate = useNavigate();
 
   // ImageUpload 컴포넌트 prop
-  const onImageUpload = (imageFiles) => {
-    setUploadedImages(imageFiles);
+  const onImageUpload = (imageFile) => {
+    setUploadedImages(imageFile);
   };
 
   // 주소 입력 palceholder 상태
@@ -30,7 +32,6 @@ const WritingPage = () => {
   // post slice 가져오기
   const postSlice = useSelector((state) => state.post);
   const locationSlice = postSlice.tradeLocation;
-  const imageSlice = postSlice.image;
 
   // 주소 문자열로 합치기
   const tradeLocation = `${locationSlice.si} ${locationSlice.gu} ${locationSlice.dong}`;
@@ -40,15 +41,10 @@ const WritingPage = () => {
     window.history.back();
   };
 
-  // const access = Cookies.get("access-token")
-  // const refresh = Cookies.get("access-token")
-
-  // console.log(access, refresh)
-
   // 완료 버튼 클릭시
   const handlePostCompleteBtnClick = () => {
     const newPost = {
-      // image: null,
+      image: uploadedImages,
       postTitle: title,
       postContent: content,
       postPrice: price,
@@ -58,6 +54,9 @@ const WritingPage = () => {
     };
 
     fetchAddPost(newPost);
+    console.log(newPost);
+    alert("글 작성이 완료되었습니다!");
+    navigate("/");
   };
 
   // 상세주소 입력 input placeholder 설정
