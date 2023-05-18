@@ -69,11 +69,7 @@ export const fetchLogout = async () => {
       },
     });
   } catch (err) {
-    if (err.response) {
-      console.log(err.response);
-    } else {
-      console.log(err);
-    }
+    throw err;
   }
 };
 

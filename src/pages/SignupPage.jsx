@@ -58,6 +58,11 @@ function SignupPage() {
     },
   });
 
+  // 로고 클릭시 메인페이지 이동
+  const handleLogoClick = () => {
+    navigate("/");
+  };
+
   // 아이디 중복검사
   const handleCheckIdBtnClick = () => {
     mutateCheckId({ userId: id });
@@ -206,7 +211,7 @@ function SignupPage() {
   return (
     <StContainer>
       <StLoginBox>
-        <StLogo src="img/dang.png" alt="당근마켓 로고" />
+        <StLogo src="img/dang.png" alt="당근마켓 로고" onClick={handleLogoClick} />
         <StInputLabel htmlFor="idInput">
           <StInputLabelWrapper>
             <span>아이디</span>

@@ -16,7 +16,7 @@ const getRefreshToken = () => {
 };
 
 // 판매글 작성 api
-export const fetchAddPost = async (post, images) => {
+export const fetchAddPost = async (post) => {
   try {
     const formData = new FormData();
 
@@ -24,11 +24,6 @@ export const fetchAddPost = async (post, images) => {
     for (let key in post) {
       formData.append(key, post[key]);
     }
-
-    // 이미지 파일은 images[]라는 키값의 배열 형태로 저장
-    images.forEach((image) => {
-      formData.append("image[]", image);
-    });
 
     const response = await axiosInstance.post("/post/add", formData, {
       headers: {
@@ -41,7 +36,7 @@ export const fetchAddPost = async (post, images) => {
     console.log("성공시 응답부분임", response);
     return response;
   } catch (err) {
-    console.log(err);
+    throw err;
   }
 };
 

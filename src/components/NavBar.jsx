@@ -10,7 +10,7 @@ import { fetchLogout, fetchUserInfo } from "../api/signUpApi";
 function NavBar() {
   const navigation = useNavigate();
   const location = useLocation();
-  const mutation = useMutation(getKeywordApi)
+  const mutation = useMutation(getKeywordApi);
   const [searchValue, setSearchValue] = useState("");
   const searchHandler = (e) => setSearchValue(e.target.value);
   const enterSearchHandler = async (e) => {
@@ -58,7 +58,7 @@ function NavBar() {
   return (
     <st.NavLayout>
       <st.MenuStyle width="70%" paddingright="50px">
-        <st.ImgStyle width="150px" src="/img/logo2.png" alt="logo" onClick={() => navigation("/")} />
+        <st.ImgStyle width="150px" src="/img/dang.png" alt="logo" onClick={() => navigation("/")} />
         <st.TextStyle
           onClick={() => navigation("/list")}
           color={location.pathname === "/list" ? "#E78111" : "#4d5159"}
@@ -67,7 +67,7 @@ function NavBar() {
           중고거래
         </st.TextStyle>
         <st.TextStyle
-          onClick={() => navigation("/post/add")}
+          onClick={handleAddPostBtnClick}
           color={location.pathname === "/post/add" ? "#E78111" : "#4d5159"}
           hovercolor={location.pathname === "/post/add" ? "#E78111" : "#868b94"}
         >
@@ -82,7 +82,7 @@ function NavBar() {
       <st.MenuStyle width="30%" justifycontent={isLogin ? "space-between" : "flex-end"}>
         {isLogin ? (
           <>
-            <span style={{fontSize:'17px'}}>{`${userInfo.sub}님 환영합니다!`}</span>
+            <span style={{ fontSize: "17px" }}>{`${userInfo.sub}님 환영합니다!`}</span>
             <st.ImgStyle width="30px" src="/img/logindefault.png" alt="logindefault" onClick={() => navigation("/mypage")} />
           </>
         ) : null}
