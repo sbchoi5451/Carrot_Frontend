@@ -18,22 +18,13 @@ const getRefreshToken = () => {
 // 판매글 작성 api
 export const fetchAddPost = async (post) => {
   try {
-    const formData = new FormData();
-
-    // 게시글 내용 전부 post(객체) 변수에 저장
-    for (let key in post) {
-      formData.append(key, post[key]);
-    }
-
-    const response = await axiosInstance.post("/post/add", formData, {
+    const response = await axiosInstance.post("/post/add", post, {
       headers: {
         "Content-Type": "multipart/form-data",
         access_key: getAccessToken(),
         refresh_key: getRefreshToken(),
       },
     });
-
-    console.log("성공시 응답부분임", response);
     return response;
   } catch (err) {
     throw err;
