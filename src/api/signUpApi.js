@@ -20,11 +20,9 @@ export const getRefreshToken = () => {
 export const fetchSignUp = async (user) => {
   try {
     const response = await axiosInstance.post("/user/signup", user);
-    console.log(response);
-    return;
+    return response;
   } catch (err) {
-    console.log(err);
-    return err.data;
+    return err;
   }
 };
 
@@ -84,4 +82,3 @@ export const fetchUserInfo = () => {
     return null;
   }
 };
-
