@@ -7,51 +7,21 @@ function ImageUpload({ onImageUpload }) {
   let imageCount = 0;
 
   const handleImageUpload = (event) => {
-    const files = event.target.files;
-    const fileArray = Array.from(files);
+    // input.files는 유사배열객체 {[index] : file, length: 1}
+    const file = event.target.files;
+    const reader = new FileReader();
+    const fileArray = Array.from(file);
 
-    const promises = fileArray.map((file) => {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
+    // fileReading이 끝나면 진행되는 부분
+    reader.onloadend = () => {
+      setSelectedImage([reader.result, ...selectedImage]);
+      onImageUpload(file);
+    };
 
-        reader.onloadend = () => {
-          resolve(reader.result);
-        };
-
-        reader.onerror = reject;
-
-        reader.readAsDataURL(file);
-      });
-    });
-
-    Promise.all(promises)
-      .then((images) => {
-        setSelectedImage((prevImages) => [...prevImages, ...images]);
-        setFileList([...fileList, ...fileArray]);
-        onImageUpload(fileList);
-        console.log("이미지 보내고 난 후", fileList);
-      })
-      .catch((error) => {
-        console.error("Error occurred while reading files:", error);
-      });
+    // fileArray의 file마다 url reading하는 부분
+    fileArray.map((file) => reader.readAsDataURL(file));
   };
 
-  // const handleImageUpload = (event) => {
-  //   // input.files는 유사배열객체 {[index] : file, length: 1}
-  //   const file = event.target.files;
-  //   const reader = new FileReader();
-  //   const fileArray = Array.from(file);
-
-  //   // fileReading이 끝나면 진행되는 부분
-  //   reader.onloadend = () => {
-  //     setSelectedImage([reader.result, ...selectedImage]);
-  //     onImageUpload(file);
-  //     console.log("여기는 file확인", file);
-  //   };
-
-  //   // fileArray의 file마다 url reading하는 부분
-  //   fileArray.map((file) => reader.readAsDataURL(file));
-  // };
   return (
     <StContainer>
       <label htmlFor="file">
