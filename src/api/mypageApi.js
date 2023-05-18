@@ -14,13 +14,14 @@ export const fetchInterestedList = async () => {
         refresh_key: getRefreshToken(),
       },
     });
-    console.log(response.data);
-    return response.data;
+    return response;
   } catch (err) {
     if (err.response) {
-      console.log(err.response);
+      return err.response;
     } else {
-      console.log(err);
+      return err;
     }
   }
 };
+
+// 판매목록 가져오는 함수
